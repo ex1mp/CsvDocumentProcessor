@@ -6,14 +6,12 @@
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="24.0.1" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CsvDocumentProcessor.Domain\CsvDocumentProcessor.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Parcers\" />
+    <ProjectReference Include="..\CsvDocumentProcessor.Repository\CsvDocumentProcessor.Repository.csproj" />
   </ItemGroup>
 
 </Project>
