@@ -13,7 +13,8 @@ namespace CsvDocumentProcessor.Service.Parcers.CsvParcer
     {
         public string GetManagerSurname(string filePath)
         {
-            return filePath.Substring(0, Path.GetFileName(filePath).Length - 13);
+            var fileName = Path.GetFileName(filePath);
+            return fileName.Substring(0, fileName.Length - 13);
         }
         public List<CsvDataContainer> GetDataFromCsv(string filePath)
         {

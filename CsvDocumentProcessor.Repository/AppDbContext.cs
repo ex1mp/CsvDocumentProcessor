@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CsvDocumentProcessor.Repository
 {
-    class AppDbContext : DbContext
+    public class AppDbContext : DbContext
     {
         public AppDbContext()
         {
@@ -22,7 +22,7 @@ namespace CsvDocumentProcessor.Repository
         public DbSet<Sales> Sales { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=HOME-PC/SQLEXPRESS;Database=CsvDocumentprocessor;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(@"server=HOME-PC\SQLEXPRESS;Database=CsvDocumentProcessor;Trusted_Connection=True;");
         }
     }
 }

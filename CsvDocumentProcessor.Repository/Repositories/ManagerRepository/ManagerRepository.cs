@@ -9,22 +9,28 @@ namespace CsvDocumentProcessor.Repository.Repositories.ManagerRepository
 {
     public class ManagerRepository: IManagerRepository
     {
+        private AppDbContext dbContext;
+        public ManagerRepository(AppDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+        public ManagerRepository()
+        {
+            this.dbContext = new AppDbContext();
+        }
         public Manager FindManager(string managerSurname)
         {
-            using var dbContext = new AppDbContext();
             return dbContext.Managers.FirstOrDefault(x => x.Surname == managerSurname);
         }
 
         public void AddManager(Manager manager)
         {
-            using var dbContext = new AppDbContext();
             dbContext.Managers.Add(manager);
             dbContext.SaveChanges();
         }
 
         public void RemoveManager(Manager manager)
         {
-            using var dbContext = new AppDbContext();
             dbContext.Managers.Remove(manager);
             dbContext.SaveChanges();
         }

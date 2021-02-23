@@ -13,5 +13,7 @@ namespace CsvDocumentProcessor.Repository.Repositories.SalesRepository
         Task<ICollection<Sales>> GetAllWithInclude();
 
         void AddSale(Sales sale);
+
+        void AddSales(List<Sales> sales);
     }
 }

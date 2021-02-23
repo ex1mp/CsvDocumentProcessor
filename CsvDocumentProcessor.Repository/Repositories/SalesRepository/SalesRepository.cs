@@ -8,29 +8,42 @@ namespace CsvDocumentProcessor.Repository.Repositories.SalesRepository
 {
     public class SalesRepository : ISalesRepository
     {
+        private AppDbContext dbContext;
+        public SalesRepository(AppDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+        public SalesRepository()
+        {
+            dbContext = new AppDbContext();
+        }
 
         public async Task<ICollection<Sales>> GetAll()
         {
-            using var dbContext = new AppDbContext();
             return await dbContext.Sales.ToListAsync();
         }
 
         public async Task<ICollection<Sales>> GetAllWithInclude()
         {
-            using var dbContext = new AppDbContext();
             return await dbContext.Sales
                 .Include(x => x.Manager)
-                .Include(x => x.Customer)
+                .Include(x => x.Client)
                 .Include(x => x.Product)
                 .ToListAsync();
         }
 
         public void AddSale(Sales sale)
         {
-            using var dbContext = new AppDbContext();
-            dbContext.Add(sale);
+            dbContext.Sales.Add(sale);
             dbContext.SaveChanges();
         }
-        
+        public void AddSales(List<Sales> sales)
+        {
+            foreach (var sale in sales)
+            {
+                dbContext.Sales.Add(sale);
+            }
+            dbContext.SaveChanges();
+        }
     }
 }

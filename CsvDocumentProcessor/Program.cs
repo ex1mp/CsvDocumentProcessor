@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CsvDocumentProcessor.Service.Servicies;
+using System;
 
 namespace CsvDocumentProcessor
 {
@@ -7,6 +8,8 @@ namespace CsvDocumentProcessor
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+            FileWatcherService fileWatcherService = new FileWatcherService();
+            fileWatcherService.FileWatcherStart();
         }
     }
 }

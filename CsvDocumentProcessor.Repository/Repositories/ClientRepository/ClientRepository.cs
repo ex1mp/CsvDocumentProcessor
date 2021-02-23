@@ -9,22 +9,28 @@ namespace CsvDocumentProcessor.Repository.Repositories.ClientRepository
 {
     public class ClientRepository: IClientRepository
     {
+        private AppDbContext dbContext;
+        public ClientRepository(AppDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+        public ClientRepository()
+        {
+            dbContext = new AppDbContext();
+        }
         public Client FindClient(string clientSurname)
         {
-            using var dbContext = new AppDbContext();
             return dbContext.Clients.FirstOrDefault(x => x.Surname == clientSurname);
         }
 
         public void AddClient(Client client)
         {
-            using var dbContext = new AppDbContext();
             dbContext.Clients.Add(client);
             dbContext.SaveChanges();
         }
 
         public void RemoveClient(Client client)
         {
-            using var dbContext = new AppDbContext();
             dbContext.Clients.Remove(client);
             dbContext.SaveChanges();
         }
