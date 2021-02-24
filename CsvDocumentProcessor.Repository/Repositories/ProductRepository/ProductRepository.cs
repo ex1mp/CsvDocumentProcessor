@@ -1,13 +1,9 @@
 ﻿using CsvDocumentProcessor.Domain.Entities;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CsvDocumentProcessor.Repository.Repositories.ProductRepository
 {
-    public class ProductRepository: IProductRepository
+    public class ProductRepository : IProductRepository
     {
         private AppDbContext dbContext;
         public ProductRepository(AppDbContext dbContext)

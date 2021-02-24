@@ -1,13 +1,9 @@
 ﻿using CsvDocumentProcessor.Domain.Entities;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CsvDocumentProcessor.Repository.Repositories.ClientRepository
 {
-    public class ClientRepository: IClientRepository
+    public class ClientRepository : IClientRepository
     {
         private AppDbContext dbContext;
         public ClientRepository(AppDbContext dbContext)

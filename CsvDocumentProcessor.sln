@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvDocumentProcessor.Servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvDocumentProcessor.Repository", "CsvDocumentProcessor.Repository\CsvDocumentProcessor.Repository.csproj", "{BFE5EF0C-2162-4CF8-B4AE-1BE809EE43D5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{D7283343-472A-431D-A1A2-C8D649B10A75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbDataFiller", "ConsoleApp1\DbDataFiller.csproj", "{D7283343-472A-431D-A1A2-C8D649B10A75}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvDocumentProcessor.Client.WorkerWinService", "CsvDocumentProcessor.Client.WorkerWinService\CsvDocumentProcessor.Client.WorkerWinService.csproj", "{8FC817B5-1D01-4A1A-A35C-BE9DDDD908E7}"
 EndProject

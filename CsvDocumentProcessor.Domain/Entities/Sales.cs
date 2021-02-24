@@ -6,7 +6,7 @@ namespace CsvDocumentProcessor.Domain.Entities
 {
     public class Sales
     {
-        [Key,DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int SalesId { get; set; }
         public int ManagerId { get; set; }
         [ForeignKey("ManagerId")]

@@ -19,10 +19,10 @@ namespace CsvDocumentProcessor.Service.Servicies
         public void DataFromFileToDb(string filePath)
         {
             using var dbContext = new AppDbContext();
-            var clientRepository = new ClientRepository(dbContext);
-            var managerRepository = new ManagerRepository(dbContext);
-            var productRepository = new ProductRepository(dbContext);
-            var salesRepository = new SalesRepository(dbContext);
+            IClientRepository clientRepository = new ClientRepository(dbContext);
+            IManagerRepository managerRepository = new ManagerRepository(dbContext);
+            IProductRepository productRepository = new ProductRepository(dbContext);
+            ISalesRepository salesRepository = new SalesRepository(dbContext);
             var csvDataContainer = csvParcer.GetDataFromCsv(filePath);
             var manager = managerRepository.FindManager(csvParcer.GetManagerSurname(filePath));
             var sales = new List<Sales>();
