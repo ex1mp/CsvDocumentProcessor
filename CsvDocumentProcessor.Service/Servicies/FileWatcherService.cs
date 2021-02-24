@@ -5,14 +5,17 @@ using System.Threading;
 
 namespace CsvDocumentProcessor.Service.Servicies
 {
-    public class FileWatcherService
+    public class FileWatcherService : IDisposable
     {
         private readonly string filePath;
         private DocumentProcessorService documentProcessorService;
         private FileSystemWatcher watcher;
         private bool enabled = true;
+        private IsLaunchedService isLaunchedService;
         public FileWatcherService()
         {
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler(CurrentDomain_ProcessExit);
+            isLaunchedService = new IsLaunchedService();
             documentProcessorService = new DocumentProcessorService();
             filePath = ConfigurationManager.AppSettings.Get("FilePath");
             watcher = new FileSystemWatcher();
@@ -24,7 +27,9 @@ namespace CsvDocumentProcessor.Service.Servicies
         }
         public void FileWatcherStart()
         {
+            isLaunchedService.SetAppStarted();
             watcher.EnableRaisingEvents = true;
+            enabled = true;
             while (enabled)
             {
                 Thread.Sleep(1000);
@@ -33,6 +38,7 @@ namespace CsvDocumentProcessor.Service.Servicies
 
         public void FileWatcherStop()
         {
+            isLaunchedService.SetAppStopped();
             watcher.EnableRaisingEvents = false;
             enabled = false;
         }
@@ -42,5 +48,56 @@ namespace CsvDocumentProcessor.Service.Servicies
             Console.WriteLine("Watcher_NewFileDetected");
             documentProcessorService.DocumentProcessor();
         }
+        private void CurrentDomain_ProcessExit(object sender, EventArgs e)
+        {
+            Console.Beep();
+            isLaunchedService.SetAppStopped();
+        }
+        public void Dispose()
+        {
+            isLaunchedService.SetAppStopped();
+            watcher.Dispose();
+        }
+
     }
+    //public class FileWatcherService
+    //{
+    //    private readonly string filePath;
+    //    private DocumentProcessorService documentProcessorService;
+    //    private FileSystemWatcher watcher;
+    //    private bool enabled = true;
+    //    public FileWatcherService()
+    //    {
+
+    //        documentProcessorService = new DocumentProcessorService();
+    //        filePath = ConfigurationManager.AppSettings.Get("FilePath");
+    //        watcher = new FileSystemWatcher();
+    //        watcher.Path = filePath;
+    //        watcher.Filter = "*.csv";
+    //        watcher.Changed += Watcher_NewFileDetected;
+    //        watcher.Created += Watcher_NewFileDetected;
+    //        //watcher.EnableRaisingEvents = true;
+    //    }
+    //    public void FileWatcherStart()
+    //    {
+    //        watcher.EnableRaisingEvents = true;
+    //        Console.WriteLine("FileWatcherStart");
+    //        while (enabled)
+    //        {
+    //            Thread.Sleep(1000);
+    //        }
+    //    }
+
+    //    public void FileWatcherStop()
+    //    {
+    //        watcher.EnableRaisingEvents = false;
+    //        enabled = false;
+    //    }
+
+    //    private void Watcher_NewFileDetected(object sender, FileSystemEventArgs e)
+    //    {
+    //        Console.WriteLine("Watcher_NewFileDetected");
+    //        documentProcessorService.DocumentProcessor();
+    //    }
+    //}
 }

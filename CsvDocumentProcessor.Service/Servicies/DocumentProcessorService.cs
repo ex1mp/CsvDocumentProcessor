@@ -51,6 +51,7 @@ namespace CsvDocumentProcessor.Service.Servicies
         private void DataFromFileToDb(string currentFile)
         {
             salesCreatorService.DataFromFileToDb(currentFile);
+            MoveDocument(currentFile);
         }
 
         private void MoveDocument(string filePath)

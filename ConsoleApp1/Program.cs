@@ -21,8 +21,8 @@ namespace ConsoleApp1
                 Client= appDbContext.Clients.FirstOrDefault(x=>x.Surname== "Sokol"),
                 Product=appDbContext.Products.FirstOrDefault(x=>x.ProductName== "Water"),SaleDate=DateTime.Now,SaleCost=3453 };
             using AppDbContext app2DbContext = new AppDbContext();
-            app2DbContext.Add(sale);
-            app2DbContext.SaveChanges();
+            appDbContext.Add(sale);
+            appDbContext.SaveChanges();
             Console.WriteLine("Done!");
         }
     }

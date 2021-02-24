@@ -9,11 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvDocumentProcessor.Domain
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvDocumentProcessor.Service", "CsvDocumentProcessor.Service\CsvDocumentProcessor.Service.csproj", "{E1F8A538-C6DC-4A40-A522-7D95BC192322}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvDocumentProcessor.Client.WorkerService", "CsvDocumentProcessor.Client.WorkerService\CsvDocumentProcessor.Client.WorkerService.csproj", "{331E4D63-A464-4DFC-B271-40C8B5BBD83C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvDocumentProcessor.Repository", "CsvDocumentProcessor.Repository\CsvDocumentProcessor.Repository.csproj", "{BFE5EF0C-2162-4CF8-B4AE-1BE809EE43D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{D7283343-472A-431D-A1A2-C8D649B10A75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{D7283343-472A-431D-A1A2-C8D649B10A75}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvDocumentProcessor.Client.WorkerWinService", "CsvDocumentProcessor.Client.WorkerWinService\CsvDocumentProcessor.Client.WorkerWinService.csproj", "{8FC817B5-1D01-4A1A-A35C-BE9DDDD908E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +33,6 @@ Global
 		{E1F8A538-C6DC-4A40-A522-7D95BC192322}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1F8A538-C6DC-4A40-A522-7D95BC192322}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1F8A538-C6DC-4A40-A522-7D95BC192322}.Release|Any CPU.Build.0 = Release|Any CPU
-		{331E4D63-A464-4DFC-B271-40C8B5BBD83C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{331E4D63-A464-4DFC-B271-40C8B5BBD83C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{331E4D63-A464-4DFC-B271-40C8B5BBD83C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{331E4D63-A464-4DFC-B271-40C8B5BBD83C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BFE5EF0C-2162-4CF8-B4AE-1BE809EE43D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BFE5EF0C-2162-4CF8-B4AE-1BE809EE43D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFE5EF0C-2162-4CF8-B4AE-1BE809EE43D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{D7283343-472A-431D-A1A2-C8D649B10A75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7283343-472A-431D-A1A2-C8D649B10A75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7283343-472A-431D-A1A2-C8D649B10A75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FC817B5-1D01-4A1A-A35C-BE9DDDD908E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FC817B5-1D01-4A1A-A35C-BE9DDDD908E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FC817B5-1D01-4A1A-A35C-BE9DDDD908E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FC817B5-1D01-4A1A-A35C-BE9DDDD908E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
