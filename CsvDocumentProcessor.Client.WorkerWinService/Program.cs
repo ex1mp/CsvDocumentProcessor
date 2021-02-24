@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,6 +14,7 @@ namespace CsvDocumentProcessor.Client.WorkerWinService
     {
         private static async Task Main(string[] args)
         {
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler(CurrentDomain_ProcessExit);
             var isService = !(Debugger.IsAttached || args.Contains("--console"));
 
             var builder = new HostBuilder()
@@ -29,6 +31,14 @@ namespace CsvDocumentProcessor.Client.WorkerWinService
             {
                 await builder.RunConsoleAsync();
             }
+        }
+        private static void CurrentDomain_ProcessExit(object sender, EventArgs e)
+        {
+            Console.Beep();
+            RegistryKey localMachineKey = Registry.LocalMachine;
+            RegistryKey currentUserKey = Registry.CurrentUser;
+            RegistryKey startKey = currentUserKey.CreateSubKey("IsStartedCsvParcer");
+            startKey.SetValue("IsStarted", false);
         }
     }
 }
