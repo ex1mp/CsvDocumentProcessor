@@ -1,7 +1,7 @@
-﻿using CsvDocumentProcessor.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using CsvDocumentProcessor.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CsvDocumentProcessor.Repository.Repositories.SalesRepository
 {
@@ -38,10 +38,7 @@ namespace CsvDocumentProcessor.Repository.Repositories.SalesRepository
         }
         public void AddSales(List<Sales> sales)
         {
-            foreach (var sale in sales)
-            {
-                dbContext.Sales.Add(sale);
-            }
+            dbContext.AddRange(sales);
             dbContext.SaveChanges();
         }
     }

@@ -19,7 +19,7 @@ namespace CsvDocumentProcessor.Client.WorkerWinService
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            // Stop timers, services
+            //Stop timers, services
             fileWatcher.FileWatcherStop();
             return Task.CompletedTask;
         }

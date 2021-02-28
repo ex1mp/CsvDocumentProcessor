@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CsvDocumentProcessor.Service.Parcers.CsvParcer
+namespace CsvDocumentProcessor.Service.Containers
 {
     public struct CsvDataContainer
     {

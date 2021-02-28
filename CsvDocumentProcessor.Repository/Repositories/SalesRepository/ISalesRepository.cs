@@ -1,8 +1,6 @@
-﻿
-
-using CsvDocumentProcessor.Domain.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using CsvDocumentProcessor.Domain.Entities;
 
 namespace CsvDocumentProcessor.Repository.Repositories.SalesRepository
 {

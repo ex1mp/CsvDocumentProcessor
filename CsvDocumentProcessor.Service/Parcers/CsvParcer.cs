@@ -1,10 +1,11 @@
-﻿using CsvHelper;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using CsvDocumentProcessor.Service.Containers;
+using CsvHelper;
 
-namespace CsvDocumentProcessor.Service.Parcers.CsvParcer
+namespace CsvDocumentProcessor.Service.Parcers
 {
     public class CsvParcer
     {
