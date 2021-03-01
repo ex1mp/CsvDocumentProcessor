@@ -22,9 +22,9 @@ namespace CsvDocumentProcessor.Service.Servicies
         public void DataFromFileToDb(string filePath)
         {
             using var dbContext = new AppDbContext();
-            IRepository<Client> clientRepository = new ClientRepository(dbContext, syncObjContainer.ClientsLocker);
-            IRepository<Manager> managerRepository = new ManagerRepository(dbContext, syncObjContainer.ManagersLocker);
-            IRepository<Product> productRepository = new ProductRepository(dbContext, syncObjContainer.ProductsLocker);
+            using IRepository<Client> clientRepository = new ClientRepository(dbContext, syncObjContainer.ClientsLocker);
+            using IRepository<Manager> managerRepository = new ManagerRepository(dbContext, syncObjContainer.ManagersLocker);
+            using IRepository<Product> productRepository = new ProductRepository(dbContext, syncObjContainer.ProductsLocker);
             ISalesRepository salesRepository = new SalesRepository(dbContext);
             var csvDataContainer = csvParcer.GetDataFromCsv(filePath);
             var manager = managerRepository.Get(csvParcer.GetManagerSurname(filePath));

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CsvDocumentProcessor.Client.WorkerWinService
 {
-    public class LoggingService : IHostedService, IDisposable
+    public class CsvWatchService : IHostedService, IDisposable
     {
         FileWatcherService fileWatcher;
         public Task StartAsync(CancellationToken cancellationToken)

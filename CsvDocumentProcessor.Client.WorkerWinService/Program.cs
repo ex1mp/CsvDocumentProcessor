@@ -18,7 +18,7 @@ namespace CsvDocumentProcessor.Client.WorkerWinService
             var builder = new HostBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<LoggingService>();
+                    services.AddHostedService<CsvWatchService>();
                 });
 
             if (isService)
