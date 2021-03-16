@@ -18,6 +18,7 @@ namespace CsvDocumentProcessor.Repository
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"server=HOME-PC\SQLEXPRESS;Database=CsvDocumentProcessor;Trusted_Connection=True;");
+            //data source=(local)
         }
     }
 }
