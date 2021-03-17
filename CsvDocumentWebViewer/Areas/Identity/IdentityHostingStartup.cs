@@ -25,7 +25,8 @@ namespace CsvDocumentWebViewer.Areas.Identity
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;
                 })
-                    .AddEntityFrameworkStores<AuthDbContext>();
+                    .AddRoles<IdentityRole>().
+                    AddEntityFrameworkStores<AuthDbContext>();
             });
         }
     }

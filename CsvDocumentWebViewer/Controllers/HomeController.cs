@@ -24,7 +24,6 @@ namespace CsvDocumentWebViewer.Controllers
         {
             return View();
         }
-
         public IActionResult Privacy()
         {
             return View();
