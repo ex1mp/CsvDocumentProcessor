@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using CsvDocumentWebViewer.Areas.Identity.Data;
 using CsvDocumentWebViewer.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CsvDocumentWebViewer.Controllers
 {
-        public class RolesController : Controller
+
+    [Authorize(Roles = "admin")]
+    public class RolesController : Controller
         {
             RoleManager<IdentityRole> _roleManager;
             UserManager<WebViewerUser> _userManager;

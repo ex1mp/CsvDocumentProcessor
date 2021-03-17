@@ -6,30 +6,30 @@ namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
 {
     public class ManagerRepository : IRepository<Manager>
     {
-        private AppDbContext dbContext;
-        private ReaderWriterLockSlim managersLockSlim;
+        private AppDbContext _dbContext;
+        private ReaderWriterLockSlim _managersLockSlim;
         public ManagerRepository(AppDbContext dbContext, ReaderWriterLockSlim managersLockSlim)
         {
-            this.dbContext = dbContext;
-            this.managersLockSlim = managersLockSlim;
+            this._dbContext = dbContext;
+            this._managersLockSlim = managersLockSlim;
         }
         public void Add(ref Manager manager)
         {
             var temp = Get(manager.Surname);
             if (temp == null)
             {
-                managersLockSlim.EnterWriteLock();
+                _managersLockSlim.EnterWriteLock();
                 try
                 {
                     if ((temp = Get(manager.Surname)) == null)
                     {
-                        dbContext.Managers.Add(manager);
-                        dbContext.SaveChanges();
+                        _dbContext.Managers.Add(manager);
+                        _dbContext.SaveChanges();
                     }
                 }
                 finally
                 {
-                    managersLockSlim.ExitWriteLock();
+                    _managersLockSlim.ExitWriteLock();
                 }
             }
             else
@@ -37,33 +37,62 @@ namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
                 manager = temp;
             }
         }
-        public void Remove(Manager manager)
+        
+        public void Remove(int id)
         {
-            var temp = Get(manager.Surname);
+            var temp = Get(id);
             if (temp != null)
             {
-                managersLockSlim.EnterWriteLock();
+                _managersLockSlim.EnterWriteLock();
                 try
                 {
-                    if ((temp = Get(manager.Surname)) != null)
+                    if ((temp = Get(id)) != null)
                     {
-                        dbContext.Managers.Remove(manager);
-                        dbContext.SaveChanges();
+                        _dbContext.Managers.Remove(temp);
+                        _dbContext.SaveChanges();
                     }
                 }
                 finally
                 {
-                    managersLockSlim.ExitWriteLock();
+                    _managersLockSlim.ExitWriteLock();
+                }
+            }
+        }
+        public void Update(int id, Manager manager)
+        {
+            var temp = Get(id);
+            if (temp != null)
+            {
+                _managersLockSlim.EnterWriteLock();
+                try
+                {
+                    if ((temp = Get(id)) != null)
+                    {
+                        _dbContext.Update(manager);
+                        _dbContext.SaveChanges();
+                    }
+                }
+                finally
+                {
+                    _managersLockSlim.ExitWriteLock();
                 }
             }
         }
         public Manager Get(string managerSurname)
         {
-            return dbContext.Managers.FirstOrDefault(x => x.Surname == managerSurname);
+            return _dbContext.Managers.FirstOrDefault(x => x.Surname == managerSurname);
+        }
+        public Manager Get(int id)
+        {
+            return _dbContext.Managers.Find(id);
+        }
+        public bool Exists(int id)
+        {
+            return _dbContext.Managers.Any(e => e.ManagerId == id);
         }
         public void Dispose()
         {
-            managersLockSlim.Dispose();
+            _managersLockSlim.Dispose();
         }
     }
 }

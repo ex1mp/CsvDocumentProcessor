@@ -13,5 +13,8 @@ namespace CsvDocumentProcessor.Repository.Repositories.SalesRepository
         void AddSale(Sales sale);
 
         void AddSales(List<Sales> sales);
+
+        void Update(int id, Sales sale);
+        Sales Get(int id);
     }
 }

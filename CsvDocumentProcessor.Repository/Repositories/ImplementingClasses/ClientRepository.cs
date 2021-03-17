@@ -6,64 +6,95 @@ namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
 {
     public class ClientRepository : IRepository<Client>
     {
-        private AppDbContext dbContext;
-        private ReaderWriterLockSlim clientsLockSlim;
+        private AppDbContext _dbContext;
+        private ReaderWriterLockSlim _clientsLockSlim;
         public ClientRepository(AppDbContext dbContext, ReaderWriterLockSlim clientsLockSlim)
         {
-            this.dbContext = dbContext;
-            this.clientsLockSlim = clientsLockSlim;
+            this._dbContext = dbContext;
+            this._clientsLockSlim = clientsLockSlim;
         }
         public void Add(ref Client client)
         {
             var temp = Get(client.Surname);
-            if (temp == null)
+            if (temp != null)
             {
-                clientsLockSlim.EnterWriteLock();
+
+                _clientsLockSlim.EnterWriteLock();
                 try
                 {
-                    if ((temp = Get(client.Surname)) == null)
+                    if ((temp = Get(client.Surname)) != null)
                     {
-                        dbContext.Clients.Add(client);
-                        dbContext.SaveChanges();
+                        _dbContext.Clients.Add(client);
+                        _dbContext.SaveChanges();
                     }
                 }
                 finally
                 {
-                    clientsLockSlim.ExitWriteLock();
-                }  
+                    _clientsLockSlim.ExitWriteLock();
+                }
             }
             else
             {
                 client = temp;
             }
         }
-        public void Remove(Client client)
+       
+        public void Remove(int id)
         {
-            var temp = Get(client.Surname);
+            var temp = Get(id);
             if (temp != null)
             {
-                clientsLockSlim.EnterWriteLock();
+                _clientsLockSlim.EnterWriteLock();
                 try
                 {
-                    if ((temp = Get(client.Surname)) != null)
+                    if ((temp = Get(id)) != null)
                     {
-                        dbContext.Clients.Remove(client);
-                        dbContext.SaveChanges();
+                        _dbContext.Clients.Remove(temp);
+                        _dbContext.SaveChanges();
                     }
                 }
                 finally
                 {
-                    clientsLockSlim.ExitWriteLock();
-                }  
+                    _clientsLockSlim.ExitWriteLock();
+                }
             }
+        }
+        public void Update(int id, Client client)
+        {
+            var temp = Get(id);
+            if (temp != null)
+            {
+                _clientsLockSlim.EnterWriteLock();
+                try
+                {
+                    if ((temp = Get(id)) != null)
+                    {
+                        _dbContext.Update(client);
+                        _dbContext.SaveChanges();
+                    }
+                }
+                finally
+                {
+                    _clientsLockSlim.ExitWriteLock();
+                }
+            }
+
         }
         public Client Get(string clientSurname)
         {
-            return dbContext.Clients.FirstOrDefault(x => x.Surname == clientSurname);
+            return _dbContext.Clients.FirstOrDefault(x => x.Surname == clientSurname);
+        }
+        public Client Get(int id)
+        {
+            return _dbContext.Clients.Find(id);
+        }
+        public bool Exists(int id)
+        {
+            return _dbContext.Clients.Any(e => e.ClientId == id);
         }
         public void Dispose()
         {
-            clientsLockSlim.Dispose();
+            _clientsLockSlim.Dispose();
         }
     }
 }

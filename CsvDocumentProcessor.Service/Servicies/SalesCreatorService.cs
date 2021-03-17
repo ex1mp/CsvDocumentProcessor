@@ -1,7 +1,6 @@
 ﻿using CsvDocumentProcessor.Domain.Entities;
 using CsvDocumentProcessor.Repository;
 using CsvDocumentProcessor.Repository.Repositories.ImplementingClasses;
-using CsvDocumentProcessor.Service.Containers;
 using System.Collections.Generic;
 using CsvDocumentProcessor.Repository.Repositories;
 using CsvDocumentProcessor.Repository.Repositories.SalesRepository;
@@ -25,7 +24,7 @@ namespace CsvDocumentProcessor.Service.Servicies
             using IRepository<Client> clientRepository = new ClientRepository(dbContext, syncObjContainer.ClientsLocker);
             using IRepository<Manager> managerRepository = new ManagerRepository(dbContext, syncObjContainer.ManagersLocker);
             using IRepository<Product> productRepository = new ProductRepository(dbContext, syncObjContainer.ProductsLocker);
-            ISalesRepository salesRepository = new SalesRepository(dbContext);
+            ISalesRepository salesRepository = new SalesRepository(dbContext, syncObjContainer.SalesLocker);
             var csvDataContainer = csvParcer.GetDataFromCsv(filePath);
             var manager = managerRepository.Get(csvParcer.GetManagerSurname(filePath));
             var sales = new List<Sales>();

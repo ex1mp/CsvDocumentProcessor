@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CsvDocumentProcessor.Domain\CsvDocumentProcessor.Domain.csproj" />
+    <ProjectReference Include="..\CsvDocumentProcessor.Repository\CsvDocumentProcessor.Repository.csproj" />
+  </ItemGroup>
+
+</Project>
