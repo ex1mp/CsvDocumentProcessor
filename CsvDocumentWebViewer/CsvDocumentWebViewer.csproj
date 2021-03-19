@@ -15,4 +15,12 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\SalesInfoViewer\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CsvDocumentWebViewer.Services\CsvDocumentWebViewer.Services.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,4 @@
-using CsvDocumentWebViewer.Areas.Identity.Data;
+﻿using CsvDocumentWebViewer.Areas.Identity.Data;
 using CsvDocumentWebViewer.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace CsvDocumentWebViewer
 {
@@ -28,6 +29,11 @@ namespace CsvDocumentWebViewer
         {
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddDbContext<CsvDocumentWebViewerContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("CsvDocumentWebViewerContext")));
+
+          
             //services.AddDefaultIdentity<WebViewerUser>().
             //    AddRoles<IdentityRole>().
             //    AddEntityFrameworkStores<AuthDbContext>();
