@@ -1,6 +1,9 @@
 ﻿using CsvDocumentProcessor.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
 {
@@ -13,16 +16,30 @@ namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
             this._dbContext = dbContext;
             this._clientsLockSlim = clientsLockSlim;
         }
+        public ClientRepository()
+        {
+            _clientsLockSlim = new ReaderWriterLockSlim();
+            _dbContext = new AppDbContext();
+        }
+        public async Task<ICollection<Client>> GetAllAsync()
+        {
+            return await _dbContext.Clients.ToListAsync();
+        }
+        public async Task<Client> GetAsync(int id)
+        {
+            return await _dbContext.Clients.FirstOrDefaultAsync(x => x.ClientId == id);
+        }
+      
         public void Add(ref Client client)
         {
             var temp = Get(client.Surname);
-            if (temp != null)
+            if (temp == null)
             {
 
                 _clientsLockSlim.EnterWriteLock();
                 try
                 {
-                    if ((temp = Get(client.Surname)) != null)
+                    if ((temp = Get(client.Surname)) == null)
                     {
                         _dbContext.Clients.Add(client);
                         _dbContext.SaveChanges();
@@ -59,17 +76,17 @@ namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
                 }
             }
         }
-        public void Update(int id, Client client)
+        public void Update(Client client)
         {
-            var temp = Get(id);
+            var temp = Get(client.ClientId);
             if (temp != null)
             {
                 _clientsLockSlim.EnterWriteLock();
                 try
                 {
-                    if ((temp = Get(id)) != null)
+                    if ((temp = Get(client.ClientId)) != null)
                     {
-                        _dbContext.Update(client);
+                        _dbContext.Entry(temp).CurrentValues.SetValues(client);
                         _dbContext.SaveChanges();
                     }
                 }

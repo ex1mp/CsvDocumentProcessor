@@ -16,6 +16,7 @@ namespace CsvDocumentWebViewer.Controllers
         public ClientViewsController(CsvDocumentWebViewerContext context)
         {
             _context = context;
+
         }
 
         // GET: ClientViews

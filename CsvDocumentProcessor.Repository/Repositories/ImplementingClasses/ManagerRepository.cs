@@ -1,6 +1,9 @@
 ﻿using CsvDocumentProcessor.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
 {
@@ -12,6 +15,16 @@ namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
         {
             this._dbContext = dbContext;
             this._managersLockSlim = managersLockSlim;
+        }
+        public ManagerRepository()
+        {
+            _dbContext = new AppDbContext();
+            _managersLockSlim = new ReaderWriterLockSlim();
+
+        }
+        public async Task<ICollection<Manager>> GetAllAsync()
+        {
+            return await _dbContext.Managers.ToListAsync();
         }
         public void Add(ref Manager manager)
         {
@@ -37,7 +50,7 @@ namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
                 manager = temp;
             }
         }
-        
+
         public void Remove(int id)
         {
             var temp = Get(id);
@@ -58,17 +71,17 @@ namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
                 }
             }
         }
-        public void Update(int id, Manager manager)
+        public void Update(Manager manager)
         {
-            var temp = Get(id);
+            var temp = Get(manager.ManagerId);
             if (temp != null)
             {
                 _managersLockSlim.EnterWriteLock();
                 try
                 {
-                    if ((temp = Get(id)) != null)
+                    if ((temp = Get(manager.ManagerId)) != null)
                     {
-                        _dbContext.Update(manager);
+                        _dbContext.Entry(temp).CurrentValues.SetValues(manager);
                         _dbContext.SaveChanges();
                     }
                 }

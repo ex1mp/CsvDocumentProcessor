@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CsvDocumentProcessor.Domain.Entities;
@@ -18,6 +19,7 @@ namespace CsvDocumentProcessor.Repository.Repositories.SalesRepository
         public SalesRepository()
         {
             _dbContext = new AppDbContext();
+            _salesLockSlim = new ReaderWriterLockSlim();
         }
 
         public async Task<ICollection<Sales>> GetAll()
@@ -35,7 +37,13 @@ namespace CsvDocumentProcessor.Repository.Repositories.SalesRepository
         }
         public Sales Get(int id)
         {
-            return _dbContext.Sales.Find(id);
+            //_dbContext.Sales.Find(id);
+            
+            return _dbContext.Sales
+                .Include(x => x.Manager)
+                .Include(x => x.Client)
+                .Include(x => x.Product).
+                FirstOrDefault(x => x.SalesId == id);
         }
 
         public void AddSale(Sales sale)
@@ -68,17 +76,17 @@ namespace CsvDocumentProcessor.Repository.Repositories.SalesRepository
                 }
             }
         }
-        public void Update(int id, Sales sale)
+        public void Update(Sales sale)
         {
-            var temp = Get(id);
+            var temp = Get(sale.SalesId);
             if (temp != null)
             {
                 _salesLockSlim.EnterWriteLock();
                 try
                 {
-                    if ((temp = Get(id)) != null)
+                    if ((temp = Get(sale.SalesId)) != null)
                     {
-                        _dbContext.Update(sale);
+                        _dbContext.Entry(temp).CurrentValues.SetValues(sale);
                         _dbContext.SaveChanges();
                     }
                 }
@@ -88,6 +96,10 @@ namespace CsvDocumentProcessor.Repository.Repositories.SalesRepository
                 }
             }
 
+        }
+        public bool Exists(int id)
+        {
+            return _dbContext.Sales.Any(e => e.SalesId == id);
         }
 
     }

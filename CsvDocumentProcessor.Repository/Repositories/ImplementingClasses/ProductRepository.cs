@@ -1,6 +1,9 @@
 ﻿using CsvDocumentProcessor.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
 {
@@ -12,6 +15,15 @@ namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
         {
             this._dbContext = dbContext;
             this._productsLockSlim = productsLockSlim;
+        }
+        public ProductRepository()
+        {
+            _dbContext = new AppDbContext();
+            _productsLockSlim = new ReaderWriterLockSlim();
+        }
+        public async Task<ICollection<Product>> GetAllAsync()
+        {
+            return await _dbContext.Products.ToListAsync();
         }
         public void Add(ref Product product)
         {
@@ -57,17 +69,17 @@ namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
                 }
             }
         }
-        public void Update(int id, Product product)
+        public void Update(Product product)
         {
-            var temp = Get(id);
+            var temp = Get(product.ProductId);
             if (temp != null)
             {
                 _productsLockSlim.EnterWriteLock();
                 try
                 {
-                    if ((temp = Get(id)) != null)
+                    if ((temp = Get(product.ProductId)) != null)
                     {
-                        _dbContext.Update(product);
+                        _dbContext.Entry(temp).CurrentValues.SetValues(product);
                         _dbContext.SaveChanges();
                     }
                 }

@@ -8,7 +8,7 @@ namespace CsvDocumentProcessor.Repository.Repositories
         void Remove(int id);
         TEntity Get(string param);
         TEntity Get(int id);
-        void Update(int id, TEntity entity);
+        void Update(TEntity entity);
         bool Exists(int id);
     }
 }

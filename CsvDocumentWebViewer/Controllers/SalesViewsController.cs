@@ -27,6 +27,7 @@ namespace CsvDocumentWebViewer.Controllers
             return View(await csvDocumentWebViewerContext.ToListAsync());
         }
 
+
         // GET: SalesViews/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -70,10 +71,7 @@ namespace CsvDocumentWebViewer.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClientId"] = new SelectList(_context.Set<ClientView>(), "ClientId", "ClientId", salesView.ClientId);
-            ViewData["ManagerId"] = new SelectList(_context.Set<ManagerView>(), "ManagerId", "ManagerId", salesView.ManagerId);
-            ViewData["ProductId"] = new SelectList(_context.Set<ProductView>(), "ProductId", "ProductId", salesView.ProductId);
-            return View(salesView);
+            return View("Error");
         }
 
         // GET: SalesViews/Edit/5
@@ -89,9 +87,9 @@ namespace CsvDocumentWebViewer.Controllers
             {
                 return NotFound();
             }
-            ViewData["ClientId"] = new SelectList(_context.Set<ClientView>(), "ClientId", "ClientId", salesView.ClientId);
-            ViewData["ManagerId"] = new SelectList(_context.Set<ManagerView>(), "ManagerId", "ManagerId", salesView.ManagerId);
-            ViewData["ProductId"] = new SelectList(_context.Set<ProductView>(), "ProductId", "ProductId", salesView.ProductId);
+            ViewData["ClientId"] = new SelectList(_context.ClientView.AsEnumerable(), "ClientId", "ClientId", salesView.ClientId);
+            //ViewData["ManagerId"] = new SelectList(_context.Set<ManagerView>(), "ManagerId", "ManagerId", salesView.ManagerId);
+           // ViewData["ProductId"] = new SelectList(_context.Set<ProductView>(), "ProductId", "ProductId", salesView.ProductId);
             return View(salesView);
         }
 

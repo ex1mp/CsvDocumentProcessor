@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CsvDocumentProcessor.Domain\CsvDocumentProcessor.Domain.csproj" />
     <ProjectReference Include="..\CsvDocumentProcessor.Repository\CsvDocumentProcessor.Repository.csproj" />
   </ItemGroup>
