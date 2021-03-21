@@ -16,11 +16,12 @@ namespace TestingApp
         static void Main(string[] args)
         {
             SalesViewRepository salesViewRepository = new();
-            ProductViewRepository productViewRepository = new();
+            IProductViewRepository productViewRepository = new ProductViewRepository();
             ClientViewRepository clientViewRepository = new();
             ManagerViewRepository managerViewRepository = new();
-           
-            Console.WriteLine(salesViewRepository.Exists(8));
+            var f = productViewRepository.GetAllAsync().Result;
+            Console.WriteLine("dss");
+            //Console.WriteLine(salesViewRepository.Exists(5));
             //var salV = new SalesView()
             //{
             //    Client = new ClientView() { ClientId = 1, Surname = "sds", Name = "sds" },
@@ -34,19 +35,19 @@ namespace TestingApp
 
             //};
             //var p = productViewRepository.Get(1);
-           // var c = clientViewRepository.Get(1);
-           //var m = managerViewRepository.Get(2);
-           // var s = new SalesView();
-           // //s.Manager = m;
-           // s.SalesId = 7;
-           // s.ManagerId = 1;
-           // s.ClientId = 1;
-           // s.ProductId = 1;
-           // s.SaleCost = 345345;
-           // s.SaleDate = DateTime.Now;
-           // //s.Client = c;
-           //// s.Product = p;
-           // salesViewRepository.Update(s);
+            // var c = clientViewRepository.Get(1);
+            //var m = managerViewRepository.Get(2);
+            // var s = new SalesView();
+            // //s.Manager = m;
+            // s.SalesId = 7;
+            // s.ManagerId = 1;
+            // s.ClientId = 1;
+            // s.ProductId = 1;
+            // s.SaleCost = 345345;
+            // s.SaleDate = DateTime.Now;
+            // //s.Client = c;
+            //// s.Product = p;
+            // salesViewRepository.Update(s);
 
 
             //var item = salesViewRepository.Get(1);

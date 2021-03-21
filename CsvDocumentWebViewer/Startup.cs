@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using CsvDocumentWebViewer.Services.ViewsRepository.PtoductViewRepo;
 
 namespace CsvDocumentWebViewer
 {
@@ -32,8 +33,8 @@ namespace CsvDocumentWebViewer
 
             services.AddDbContext<CsvDocumentWebViewerContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("CsvDocumentWebViewerContext")));
+            services.AddTransient<IProductViewRepository, ProductViewRepository>();
 
-          
             //services.AddDefaultIdentity<WebViewerUser>().
             //    AddRoles<IdentityRole>().
             //    AddEntityFrameworkStores<AuthDbContext>();

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CsvDocumentWebViewer.Services.ViewsRepository.PtoductViewRepo
 {
-    public class ProductViewRepository
+    public class ProductViewRepository: IProductViewRepository
     {
         private Mapper _mappProduct;
         private Mapper _mappProductView;
@@ -26,7 +26,7 @@ namespace CsvDocumentWebViewer.Services.ViewsRepository.PtoductViewRepo
             return _mappProduct.Map<ICollection<ProductView>>(products);
         }
         //tested ok
-        public ProductView Get(int id)
+        public ProductView Get(int? id)
         {
             using ProductRepository productRepository = new ProductRepository();
             var product = productRepository.Get(id);

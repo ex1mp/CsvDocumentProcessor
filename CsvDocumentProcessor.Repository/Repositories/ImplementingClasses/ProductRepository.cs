@@ -90,6 +90,10 @@ namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
             }
 
         }
+        public Product Get(int? id)
+        {
+            return _dbContext.Products.FirstOrDefault(x => x.ProductId == id);
+        }
         public Product Get(int id)
         {
             return _dbContext.Products.FirstOrDefault(x => x.ProductId == id);
