@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CsvDocumentProcessor.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CsvDocumentProcessor.Repository.Repositories
 {

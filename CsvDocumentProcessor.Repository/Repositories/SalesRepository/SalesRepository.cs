@@ -27,7 +27,7 @@ namespace CsvDocumentProcessor.Repository.Repositories.SalesRepository
             return await _dbContext.Sales.ToListAsync();
         }
 
-        public async Task<ICollection<Sales>> GetAllWithInclude()
+        public async Task<ICollection<Sales>> GetAllWithIncludeAsync()
         {
             return await _dbContext.Sales
                 .Include(x => x.Manager)
@@ -37,7 +37,6 @@ namespace CsvDocumentProcessor.Repository.Repositories.SalesRepository
         }
         public Sales Get(int id)
         {
-            //_dbContext.Sales.Find(id);
             
             return _dbContext.Sales
                 .Include(x => x.Manager)
@@ -101,6 +100,9 @@ namespace CsvDocumentProcessor.Repository.Repositories.SalesRepository
         {
             return _dbContext.Sales.Any(e => e.SalesId == id);
         }
-
+        public void Dispose()
+        {
+            _salesLockSlim.Dispose();
+        }
     }
 }

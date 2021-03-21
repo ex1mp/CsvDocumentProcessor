@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CsvDocumentProcessor.Domain.Entities;
 
 namespace CsvDocumentProcessor.Repository.Repositories.SalesRepository
 {
-    public interface ISalesRepository
+    public interface ISalesRepository:IDisposable
     {
         Task<ICollection<Sales>> GetAll();
 
-        Task<ICollection<Sales>> GetAllWithInclude();
+        Task<ICollection<Sales>> GetAllWithIncludeAsync();
 
         void AddSale(Sales sale);
 
