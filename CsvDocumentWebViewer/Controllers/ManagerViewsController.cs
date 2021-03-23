@@ -22,9 +22,20 @@ namespace CsvDocumentWebViewer.Controllers
         }
 
         // GET: ManagerViews
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string managerSurname, string mamagerPost)
         {
-            return View(await _managerViewRepository.GetAllAsync());
+            ViewData["SurnameFilter"] = managerSurname;
+            ViewData["PostFilter"] = mamagerPost;
+            var managers = await _managerViewRepository.GetAllAsync();
+            if (!String.IsNullOrEmpty(managerSurname))
+            {
+                managers = managers.Where(s => s.Surname.ToUpper().Contains(managerSurname.ToUpper())).ToList();
+            }
+            if (!String.IsNullOrEmpty(mamagerPost))
+            {
+                managers = managers.Where(s => s.Post.ToUpper().Contains(mamagerPost.ToUpper())).ToList();
+            }
+            return View(managers);
            // return View(await _context.ManagerView.ToListAsync());
         }
 

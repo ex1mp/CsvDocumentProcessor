@@ -1,14 +1,22 @@
 ﻿@model IEnumerable<CsvDocumentWebViewer.Services.Models.ManagerView>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Managers";
 }
 
-<h1>Index</h1>
+<h1>Managers</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by surname: <input type="text" name="mamagerSurname" value="@ViewData["SurnameFilter"]" />
+            Find by post: <input type="text" name="mamagerPost" value="@ViewData["PostFilter"]" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -45,3 +53,6 @@
 }
     </tbody>
 </table>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>

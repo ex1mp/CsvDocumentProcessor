@@ -38,6 +38,7 @@ namespace CsvDocumentWebViewer.Controllers
         public async Task<IActionResult> Index()
         {
             var csvDocumentWebViewerContext = await _salesViewRepository.GetAllAsync();
+
            // var csvDocumentWebViewerContext = _context.SalesView.Include(s => s.Client).Include(s => s.Manager).Include(s => s.Product);
             return View(csvDocumentWebViewerContext);
         }

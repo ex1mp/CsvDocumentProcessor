@@ -2,6 +2,9 @@
 using CsvDocumentWebViewer.Services.ViewsRepository.PtoductViewRepo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CsvDocumentWebViewer.Controllers
@@ -18,12 +21,25 @@ namespace CsvDocumentWebViewer.Controllers
         }
 
         // GET: ProductViews
-        public async Task<IActionResult> Index()
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _productViewRepository.GetAllAsync());
+            ViewData["CurrentFilter"] = searchString;
+            var products = await _productViewRepository.GetAllAsync();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(s => s.ProductName.ToUpper().Contains(searchString.ToUpper())).ToList();
+            }
+            return View(products);
             // return View(await _context.ProductView.ToListAsync());
         }
 
+        
+        //public IActionResult Index(string productName)
+        //{ 
+        //    return View(_productViewRepository.GetAll().Where(x=>x.ProductName == productName));
+        //}
         // GET: ProductViews/Details/5
         //public async Task<IActionResult> Details(int? id)
         public IActionResult Details(int? id)
@@ -52,9 +68,10 @@ namespace CsvDocumentWebViewer.Controllers
         // POST: ProductViews/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        // public async Task<IActionResult> Create([Bind("ProductId,ProductName")] ProductView productView)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        // public async Task<IActionResult> Create([Bind("ProductId,ProductName")] ProductView productView)
         public IActionResult Create([Bind("ProductId,ProductName")] ProductView productView)
         {
             if (ModelState.IsValid)
