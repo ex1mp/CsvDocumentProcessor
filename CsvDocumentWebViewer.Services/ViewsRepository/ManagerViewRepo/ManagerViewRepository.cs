@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CsvDocumentWebViewer.Services.ViewsRepository.ManagerViewRepo
 {
-    public class ManagerViewRepository
+    public class ManagerViewRepository: IManagerViewRepository
     {
         private Mapper _mappManager;
         private Mapper _mappManagerView;
@@ -25,8 +25,14 @@ namespace CsvDocumentWebViewer.Services.ViewsRepository.ManagerViewRepo
             var products = await managerRepository.GetAllAsync();
             return _mappManager.Map<ICollection<ManagerView>>(products);
         }
+        public ICollection<ManagerView> GetAll()
+        {
+            using ManagerRepository managerRepository = new ManagerRepository();
+            var products = managerRepository.GetAll();
+            return _mappManager.Map<ICollection<ManagerView>>(products);
+        }
         //tested ok
-        public ManagerView Get(int id)
+        public ManagerView Get(int? id)
         {
             using ManagerRepository managerRepository = new ManagerRepository();
             var manager = managerRepository.Get(id);

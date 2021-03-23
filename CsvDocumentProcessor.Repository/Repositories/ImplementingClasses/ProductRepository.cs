@@ -25,6 +25,10 @@ namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
         {
             return await _dbContext.Products.ToListAsync();
         }
+        public ICollection<Product> GetAll()
+        {
+            return _dbContext.Products.ToList();
+        }
         public void Add(ref Product product)
         {
             var temp = Get(product.ProductName);

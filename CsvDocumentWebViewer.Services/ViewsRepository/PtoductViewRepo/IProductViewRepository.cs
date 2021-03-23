@@ -9,6 +9,7 @@ namespace CsvDocumentWebViewer.Services.ViewsRepository.PtoductViewRepo
 {
     public interface IProductViewRepository
     {
+        ICollection<ProductView> GetAll();
         virtual Task<ICollection<ProductView>> GetAllAsync()
         {
             return null;

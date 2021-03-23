@@ -35,6 +35,15 @@ namespace CsvDocumentProcessor.Repository.Repositories.SalesRepository
                 .Include(x => x.Product)
                 .ToListAsync();
         }
+        public Sales Get(int? id)
+        {
+
+            return _dbContext.Sales
+                .Include(x => x.Manager)
+                .Include(x => x.Client)
+                .Include(x => x.Product).
+                FirstOrDefault(x => x.SalesId == id);
+        }
         public Sales Get(int id)
         {
             

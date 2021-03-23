@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CsvDocumentWebViewer.Services.ViewsRepository.ClientViewRepo
 {
-    public class ClientViewRepository
+    public class ClientViewRepository: IClientViewRepository
     {
         private Mapper _mappClient;
         private Mapper _mappClientView;
@@ -25,8 +25,14 @@ namespace CsvDocumentWebViewer.Services.ViewsRepository.ClientViewRepo
             var clients = await clientRepository.GetAllAsync();
             return _mappClient.Map<ICollection<ClientView>>(clients);
         }
+        public ICollection<ClientView> GetAll()
+        {
+            using ClientRepository clientRepository = new ClientRepository();
+            var clients = clientRepository.GetAll();
+            return _mappClient.Map<ICollection<ClientView>>(clients);
+        }
         //tested ok
-        public ClientView Get(int id)
+        public ClientView Get(int? id)
         {
             using ClientRepository clientRepository = new ClientRepository();
             var client = clientRepository.Get(id);

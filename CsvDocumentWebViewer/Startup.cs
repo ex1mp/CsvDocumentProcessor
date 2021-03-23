@@ -1,18 +1,13 @@
-﻿using CsvDocumentWebViewer.Areas.Identity.Data;
-using CsvDocumentWebViewer.Data;
+﻿using CsvDocumentWebViewer.Services.ViewsRepository.ClientViewRepo;
+using CsvDocumentWebViewer.Services.ViewsRepository.ManagerViewRepo;
+using CsvDocumentWebViewer.Services.ViewsRepository.PtoductViewRepo;
+using CsvDocumentWebViewer.Services.ViewsRepository.SalesViewRepo;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using CsvDocumentWebViewer.Services.ViewsRepository.PtoductViewRepo;
 
 namespace CsvDocumentWebViewer
 {
@@ -34,7 +29,9 @@ namespace CsvDocumentWebViewer
             services.AddDbContext<CsvDocumentWebViewerContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("CsvDocumentWebViewerContext")));
             services.AddTransient<IProductViewRepository, ProductViewRepository>();
-
+            services.AddTransient<IManagerViewRepository, ManagerViewRepository>();
+            services.AddTransient<IClientViewRepository, ClientViewRepository>(); 
+            services.AddTransient<ISalesViewRepository, SalesViewRepository>();
             //services.AddDefaultIdentity<WebViewerUser>().
             //    AddRoles<IdentityRole>().
             //    AddEntityFrameworkStores<AuthDbContext>();

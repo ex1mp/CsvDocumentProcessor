@@ -25,6 +25,12 @@ namespace CsvDocumentWebViewer.Services.ViewsRepository.PtoductViewRepo
             var products = await productRepository.GetAllAsync();
             return _mappProduct.Map<ICollection<ProductView>>(products);
         }
+        public ICollection<ProductView> GetAll()
+        {
+            using ProductRepository productRepository = new ProductRepository();
+            var products = productRepository.GetAll();
+            return _mappProduct.Map<ICollection<ProductView>>(products);
+        }
         //tested ok
         public ProductView Get(int? id)
         {

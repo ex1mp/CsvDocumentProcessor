@@ -26,6 +26,10 @@ namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
         {
             return await _dbContext.Managers.ToListAsync();
         }
+        public  ICollection<Manager> GetAll()
+        {
+            return _dbContext.Managers.ToList();
+        }
         public void Add(ref Manager manager)
         {
             var temp = Get(manager.Surname);
@@ -94,6 +98,10 @@ namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
         public Manager Get(string managerSurname)
         {
             return _dbContext.Managers.FirstOrDefault(x => x.Surname == managerSurname);
+        }
+        public Manager Get(int? id)
+        {
+            return _dbContext.Managers.Find(id);
         }
         public Manager Get(int id)
         {

@@ -25,6 +25,10 @@ namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
         {
             return await _dbContext.Clients.ToListAsync();
         }
+        public ICollection<Client> GetAll()
+        {
+            return _dbContext.Clients.ToList();
+        }
         public async Task<Client> GetAsync(int id)
         {
             return await _dbContext.Clients.FirstOrDefaultAsync(x => x.ClientId == id);
@@ -96,6 +100,10 @@ namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
                 }
             }
 
+        }
+        public Client Get(int? id)
+        {
+            return _dbContext.Clients.Find(id);
         }
         public Client Get(string clientSurname)
         {

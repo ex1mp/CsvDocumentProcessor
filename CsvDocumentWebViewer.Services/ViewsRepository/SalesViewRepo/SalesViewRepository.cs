@@ -1,16 +1,11 @@
-﻿using AutoMapper;
-using CsvDocumentProcessor.Domain.Entities;
-using CsvDocumentProcessor.Repository.Repositories.SalesRepository;
+﻿using CsvDocumentProcessor.Repository.Repositories.SalesRepository;
 using CsvDocumentWebViewer.Services.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CsvDocumentWebViewer.Services.ViewsRepository.SalesViewRepo
 {
-    public class SalesViewRepository
+    public class SalesViewRepository : ISalesViewRepository
     {
         private SalesMapper _salesMapper;
         public SalesViewRepository()
@@ -22,10 +17,10 @@ namespace CsvDocumentWebViewer.Services.ViewsRepository.SalesViewRepo
         {
             using SalesRepository salesRepository = new SalesRepository();
             var sales = await salesRepository.GetAllWithIncludeAsync();
-            return _salesMapper.MapSales(sales); 
+            return _salesMapper.MapSales(sales);
         }
         //tested ok
-        public SalesView Get(int id)
+        public SalesView Get(int? id)
         {
             using SalesRepository salesRepository = new SalesRepository();
             var sales = salesRepository.Get(id);
@@ -46,7 +41,7 @@ namespace CsvDocumentWebViewer.Services.ViewsRepository.SalesViewRepo
             salesRepository.Update(sales);
         }
         //tested ok
-        public void Delite(int id)
+        public void Delete(int id)
         {
             using SalesRepository salesRepository = new SalesRepository();
             salesRepository.Remove(id);
