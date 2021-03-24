@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CsvDocumentWebViewer.Services.Models;
 using CsvDocumentWebViewer.Services.ViewsRepository.ClientViewRepo;
+using CsvDocumentWebViewer.Models;
 
 namespace CsvDocumentWebViewer.Controllers
 {
@@ -22,8 +23,18 @@ namespace CsvDocumentWebViewer.Controllers
         }
 
         // GET: ClientViews
-        public async Task<IActionResult> Index(string clientSurname,string clientName)
+        public async Task<IActionResult> Index(string clientSurname,string clientName, int? pageNumber,
+            string currentSurnameFilter, string currentNameFilter)
         {
+            if (clientSurname != null || clientName != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                clientSurname = currentSurnameFilter;
+                clientName = currentNameFilter;
+            }
             ViewData["SurnameFilter"] = clientSurname;
             ViewData["NameFilter"] = clientName;
             var clients = await _clientViewRepository.GetAllAsync();
@@ -35,7 +46,9 @@ namespace CsvDocumentWebViewer.Controllers
             {
                 clients = clients.Where(s => s.Name.ToUpper().Contains(clientName.ToUpper())).ToList();
             }
-            return View(clients);
+            int pageSize = 3;
+            return View(PaginatedList<ClientView>.Create(clients, pageNumber ?? 1, pageSize));
+            //return View(clients);
             //return View(await _context.ClientView.ToListAsync());
         }
 

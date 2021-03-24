@@ -11,6 +11,7 @@ using CsvDocumentWebViewer.Services.ViewsRepository.SalesViewRepo;
 using CsvDocumentWebViewer.Services.ViewsRepository.ClientViewRepo;
 using CsvDocumentWebViewer.Services.ViewsRepository.ManagerViewRepo;
 using CsvDocumentWebViewer.Services.ViewsRepository.PtoductViewRepo;
+using CsvDocumentWebViewer.Models;
 
 namespace CsvDocumentWebViewer.Controllers
 {
@@ -35,12 +36,49 @@ namespace CsvDocumentWebViewer.Controllers
         }
 
         // GET: SalesViews
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(DateTime startDate, DateTime endDate,decimal minSum, decimal maxSum,
+            int? pageNumber, DateTime currentStartDateFilter, DateTime currentEndDateFilter,
+            decimal currenMinSumFilter, decimal currentMaxSumFilter)
         {
-            var csvDocumentWebViewerContext = await _salesViewRepository.GetAllAsync();
+            if (startDate != default || endDate != default
+                || minSum!=default || maxSum != default)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                startDate = currentStartDateFilter;
+                endDate = currentEndDateFilter;
+                minSum = currenMinSumFilter;
+                maxSum = currentMaxSumFilter;
+            }
+            ViewData["StartDate"] = startDate;
+            ViewData["EndDate"] = endDate;
+            ViewData["MinSum"] = minSum;
+            ViewData["MaxSum"] = maxSum;
+            var salesViews = await _salesViewRepository.GetAllAsync();
+            if (startDate!= default(DateTime))
+            {
+                salesViews = salesViews.Where(x => x.SaleDate > startDate).ToList();
+            }
+            if (endDate != default(DateTime))
+            {
+                salesViews = salesViews.Where(x => x.SaleDate <endDate).ToList();
+            }
+            if (minSum != default(decimal))
+            {
+                salesViews = salesViews.Where(x => x.SaleCost> minSum).ToList();
+            }
+            if (maxSum != default(decimal))
+            {
+                salesViews = salesViews.Where(x => x.SaleCost < maxSum).ToList();
+            }
+            // var csvDocumentWebViewerContext = await _salesViewRepository.GetAllAsync();
 
-           // var csvDocumentWebViewerContext = _context.SalesView.Include(s => s.Client).Include(s => s.Manager).Include(s => s.Product);
-            return View(csvDocumentWebViewerContext);
+            // var csvDocumentWebViewerContext = _context.SalesView.Include(s => s.Client).Include(s => s.Manager).Include(s => s.Product);
+            // return View(salesViews);
+            int pageSize = 5;
+            return View(PaginatedList<SalesView>.Create(salesViews, pageNumber ?? 1, pageSize));
         }
 
 

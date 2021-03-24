@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CsvDocumentWebViewer.Services.Models;
 using CsvDocumentWebViewer.Services.ViewsRepository.ManagerViewRepo;
+using CsvDocumentWebViewer.Models;
 
 namespace CsvDocumentWebViewer.Controllers
 {
@@ -22,20 +23,32 @@ namespace CsvDocumentWebViewer.Controllers
         }
 
         // GET: ManagerViews
-        public async Task<IActionResult> Index(string managerSurname, string mamagerPost)
+        public async Task<IActionResult> Index(string managerSurname, string managerPost, int? pageNumber,
+            string currentSurnameFilter, string currentPostFilter)
         {
+            if (managerSurname != null || managerPost != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                managerSurname = currentSurnameFilter;
+                managerPost = currentPostFilter;
+            }
             ViewData["SurnameFilter"] = managerSurname;
-            ViewData["PostFilter"] = mamagerPost;
+            ViewData["PostFilter"] = managerPost;
             var managers = await _managerViewRepository.GetAllAsync();
             if (!String.IsNullOrEmpty(managerSurname))
             {
                 managers = managers.Where(s => s.Surname.ToUpper().Contains(managerSurname.ToUpper())).ToList();
             }
-            if (!String.IsNullOrEmpty(mamagerPost))
+            if (!String.IsNullOrEmpty(managerPost))
             {
-                managers = managers.Where(s => s.Post.ToUpper().Contains(mamagerPost.ToUpper())).ToList();
+                managers = managers.Where(s => s.Post.ToUpper().Contains(managerPost.ToUpper())).ToList();
             }
-            return View(managers);
+            int pageSize = 3;
+            return View(PaginatedList<ManagerView>.Create(managers, pageNumber ?? 1, pageSize));
+            //return View(managers);
            // return View(await _context.ManagerView.ToListAsync());
         }
 

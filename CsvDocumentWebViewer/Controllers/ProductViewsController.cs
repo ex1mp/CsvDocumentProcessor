@@ -1,4 +1,5 @@
-﻿using CsvDocumentWebViewer.Services.Models;
+﻿using CsvDocumentWebViewer.Models;
+using CsvDocumentWebViewer.Services.Models;
 using CsvDocumentWebViewer.Services.ViewsRepository.PtoductViewRepo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,15 +24,24 @@ namespace CsvDocumentWebViewer.Controllers
         // GET: ProductViews
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string ptoductName, int? pageNumber, string currentFilter)
         {
-            ViewData["CurrentFilter"] = searchString;
-            var products = await _productViewRepository.GetAllAsync();
-            if (!String.IsNullOrEmpty(searchString))
+            if (ptoductName != null)
             {
-                products = products.Where(s => s.ProductName.ToUpper().Contains(searchString.ToUpper())).ToList();
+                pageNumber = 1;
             }
-            return View(products);
+            else
+            {
+                ptoductName = currentFilter;
+            }
+            ViewData["NameFilter"] = ptoductName;
+            var products = await _productViewRepository.GetAllAsync();
+            if (!String.IsNullOrEmpty(ptoductName))
+            {
+                products = products.Where(s => s.ProductName.ToUpper().Contains(ptoductName.ToUpper())).ToList();
+            }
+            int pageSize = 3;   
+            return View(PaginatedList<ProductView>.Create(products, pageNumber ?? 1, pageSize));
             // return View(await _context.ProductView.ToListAsync());
         }
 

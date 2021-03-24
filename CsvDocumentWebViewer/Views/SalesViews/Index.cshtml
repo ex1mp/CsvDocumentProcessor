@@ -1,61 +1,102 @@
-﻿@model IEnumerable<CsvDocumentWebViewer.Services.Models.SalesView>
+﻿@model PaginatedList<CsvDocumentWebViewer.Services.Models.SalesView>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Sales";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h1>Sales</h1>
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            from: <input type="date" name="startDate" value="@ViewData["StartDate"]" />
+            to: <input type="date" name="endDate" value="@ViewData["EndDate"]" />
+            min sum : <input type="number" name="minSum" value="@ViewData["MinSum"]" />
+            max sum : <input type="number" name="maxSum" value="@ViewData["MaxSum"]" />
+            <input type="submit" value="Search" class="btn btn-primary" />
+        </p>
+        <p>
+            
+            <a asp-action="Index">Back to Full List</a> | <a asp-action="Create">Create New</a>
+        </p>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Manager)
+                SalesId
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Client)
+                Manager
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Product)
+                Client
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SaleDate)
+                Product
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SaleCost)
+                SaleDate
+            </th>
+            <th>
+                SaleCost
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Manager.Name)
-                @Html.DisplayFor(modelItem => item.Manager.Surname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Client.Name)
-                @Html.DisplayFor(modelItem => item.Client.Surname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Product.ProductName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SaleDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SaleCost)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.SalesId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.SalesId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.SalesId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SalesId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Manager.Name)
+                    @Html.DisplayFor(modelItem => item.Manager.Surname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Client.Name)
+                    @Html.DisplayFor(modelItem => item.Client.Surname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SaleDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SaleCost)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.SalesId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.SalesId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.SalesId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentStartDateFilter="@ViewData["StartDate"]"
+   asp-route-currentEndDateFilter="@ViewData["EndDate"]"
+   asp-route-currenMinSumFilter="@ViewData["MinSum"]"
+   asp-route-currenMaxSumFilter="@ViewData["MaxSum"]"
+   class="btn btn-primary @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+     asp-route-currentStartDateFilter="@ViewData["StartDate"]"
+   asp-route-currentEndDateFilter="@ViewData["EndDate"]"
+   asp-route-currenMinSumFilter="@ViewData["MinSum"]"
+   asp-route-currenMaxSumFilter="@ViewData["MaxSum"]"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>

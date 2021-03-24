@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CsvDocumentWebViewer.Services.Models.ManagerView>
+﻿@model PaginatedList<CsvDocumentWebViewer.Services.Models.ManagerView>
 
 @{
     ViewData["Title"] = "Managers";
@@ -10,10 +10,10 @@
 <form asp-action="Index" method="get">
     <div class="form-actions no-color">
         <p>
-            Find by surname: <input type="text" name="mamagerSurname" value="@ViewData["SurnameFilter"]" />
-            Find by post: <input type="text" name="mamagerPost" value="@ViewData["PostFilter"]" />
+            Filter out by surname: <input type="text" name="managerSurname" value="@ViewData["SurnameFilter"]" />
+            Filter out by post: <input type="text" name="managerPost" value="@ViewData["PostFilter"]" />
             <input type="submit" value="Search" class="btn btn-primary" /> |
-            <a asp-action="Index">Back to Full List</a>
+            <a asp-action="Index">Back to Full List</a> | <a asp-action="Create">Create New</a>
         </p>
     </div>
 </form>
@@ -21,38 +21,55 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Surname)
+                Surname
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post)
+                Post
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Surname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Post)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ManagerId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ManagerId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ManagerId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Surname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Post)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ManagerId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ManagerId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ManagerId">Delete</a> 
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentSurnameFilter="@ViewData["SurnameFilter"]"
+   asp-route-currentPostFilter="@ViewData["PostFilter"]"
+   class="btn btn-primary @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentSurnameFilter="@ViewData["SurnameFilter"]"
+   asp-route-currentPostFilter="@ViewData["PostFilter"]"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>
