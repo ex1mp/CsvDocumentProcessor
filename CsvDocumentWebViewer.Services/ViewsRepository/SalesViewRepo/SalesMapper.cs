@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
 using CsvDocumentProcessor.Domain.Entities;
-using CsvDocumentWebViewer.Services.Models;
+using CsvDocumentWebViewer.Services.ModelsView;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CsvDocumentWebViewer.Services.ViewsRepository.SalesViewRepo
 {
     public class SalesMapper
     {
-        private Mapper _mappClient;
-        private Mapper _mappManager;
-        private Mapper _mappProduct;
+        private readonly Mapper _mappClient;
+        private readonly Mapper _mappManager;
+        private readonly Mapper _mappProduct;
         public SalesMapper()
         {
             var configCl = new MapperConfiguration(cfg => cfg.CreateMap<Client, ClientView>());
@@ -22,28 +23,24 @@ namespace CsvDocumentWebViewer.Services.ViewsRepository.SalesViewRepo
         }
         public Sales MapSalesView(SalesView salesView)
         {
-            var sales = new Sales();
-            sales.SalesId = salesView.SalesId;
-            sales.ClientId = salesView.ClientId;
-            sales.ManagerId = salesView.ManagerId;
-            sales.ProductId = salesView.ProductId;
-            sales.SaleCost = salesView.SaleCost;
-            sales.SaleDate = salesView.SaleDate;
+            var sales = new Sales
+            {
+                SalesId = salesView.SalesId,
+                ClientId = salesView.ClientId,
+                ManagerId = salesView.ManagerId,
+                ProductId = salesView.ProductId,
+                SaleCost = salesView.SaleCost,
+                SaleDate = salesView.SaleDate
+            };
             return sales;
         }
         public ICollection<Sales> MapSalesView(ICollection<SalesView> salesView)
         {
-            var sales = new List<Sales>();
-            foreach (var item in salesView)
-            {
-                sales.Add(MapSalesView(item));
-            }
-            return sales;
+            return salesView.Select(item => MapSalesView(item)).ToList();
         }
         public SalesView MapSales(Sales sales)
         {
-            SalesView salesView = new SalesView();
-            salesView.Client = _mappClient.Map<ClientView>(sales.Client);
+            var salesView = new SalesView { Client = _mappClient.Map<ClientView>(sales.Client) };
             salesView.ClientId = salesView.Client.ClientId;
             salesView.Manager = _mappManager.Map<ManagerView>(sales.Manager);
             salesView.ManagerId = salesView.Manager.ManagerId;
@@ -56,12 +53,7 @@ namespace CsvDocumentWebViewer.Services.ViewsRepository.SalesViewRepo
         }
         public ICollection<SalesView> MapSales(ICollection<Sales> sales)
         {
-            var salesViews = new List<SalesView>();
-            foreach (var item in sales)
-            {
-                salesViews.Add(MapSales(item));
-            }
-            return salesViews;
+            return sales.Select(item => MapSales(item)).ToList();
         }
     }
 }

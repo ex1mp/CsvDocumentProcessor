@@ -1,5 +1,4 @@
 ﻿using CsvDocumentWebViewer.Models;
-using CsvDocumentWebViewer.Services.Models;
 using CsvDocumentWebViewer.Services.ViewsRepository.PtoductViewRepo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using CsvDocumentWebViewer.Services.ModelsView;
 
 namespace CsvDocumentWebViewer.Controllers
 {
@@ -21,23 +21,23 @@ namespace CsvDocumentWebViewer.Controllers
         }
 
         // GET: ProductViews
-        public async Task<IActionResult> Index(string ptoductName, int? pageNumber, string currentFilter)
+        public async Task<IActionResult> Index(string productName, int? pageNumber, string currentFilter)
         {
-            if (ptoductName != null)
+            if (productName != null)
             {
                 pageNumber = 1;
             }
             else
             {
-                ptoductName = currentFilter;
+                productName = currentFilter;
             }
-            ViewData["NameFilter"] = ptoductName;
+            ViewData["NameFilter"] = productName;
             var products = await _productViewRepository.GetAllAsync();
-            if (!string.IsNullOrEmpty(ptoductName))
+            if (!string.IsNullOrEmpty(productName))
             {
-                products = products.Where(s => s.ProductName.ToUpper().Contains(ptoductName.ToUpper())).ToList();
+                products = products.Where(s => s.ProductName.ToUpper().Contains(productName.ToUpper())).ToList();
             }
-            int pageSize = 3;
+            var pageSize = 3;
             return View(PaginatedList<ProductView>.Create(products, pageNumber ?? 1, pageSize));
         }
 
@@ -71,12 +71,12 @@ namespace CsvDocumentWebViewer.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Create([Bind("ProductId,ProductName")] ProductView productView)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _productViewRepository.Add(productView);
-                return RedirectToAction(nameof(Index));
+                return View(productView);
             }
-            return View(productView);
+            _productViewRepository.Add(productView);
+            return RedirectToAction(nameof(Index));
         }
 
         [Authorize(Roles = "admin")]
@@ -106,26 +106,26 @@ namespace CsvDocumentWebViewer.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    _productViewRepository.Update(productView);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductViewExists(productView.ProductId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return View(productView);
             }
-            return View(productView);
+            try
+            {
+                _productViewRepository.Update(productView);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductViewExists(productView.ProductId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: ProductViews/Delete/5

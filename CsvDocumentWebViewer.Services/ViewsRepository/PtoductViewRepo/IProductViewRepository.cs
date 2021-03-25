@@ -1,8 +1,5 @@
-﻿using CsvDocumentWebViewer.Services.Models;
-using System;
+﻿using CsvDocumentWebViewer.Services.ModelsView;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CsvDocumentWebViewer.Services.ViewsRepository.PtoductViewRepo

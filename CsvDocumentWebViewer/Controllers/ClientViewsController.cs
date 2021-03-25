@@ -1,11 +1,11 @@
 ﻿using CsvDocumentWebViewer.Models;
-using CsvDocumentWebViewer.Services.Models;
 using CsvDocumentWebViewer.Services.ViewsRepository.ClientViewRepo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using CsvDocumentWebViewer.Services.ModelsView;
 
 namespace CsvDocumentWebViewer.Controllers
 {

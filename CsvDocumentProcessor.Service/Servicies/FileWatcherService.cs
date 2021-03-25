@@ -7,29 +7,26 @@ namespace CsvDocumentProcessor.Service.Servicies
 {
     public class FileWatcherService : IDisposable
     {
-        private readonly string filePath;
-        private readonly DocumentProcessorService documentProcessorService;
-        private readonly FileSystemWatcher watcher;
-        private bool enabled = true;
-        private readonly IsLaunchedService isLaunchedService;
+        private readonly DocumentProcessorService _documentProcessorService;
+        private readonly FileSystemWatcher _watcher;
+        private bool _enabled = true;
+        private readonly IsLaunchedService _isLaunchedService;
         public FileWatcherService()
         {
             AppDomain.CurrentDomain.ProcessExit += new EventHandler(CurrentDomain_ProcessExit);
-            isLaunchedService = new IsLaunchedService();
-            documentProcessorService = new DocumentProcessorService();
-            filePath = ConfigurationManager.AppSettings.Get("FilePath");
-            watcher = new FileSystemWatcher();
-            watcher.Path = filePath;
-            watcher.Filter = "*.csv";
-            watcher.Changed += Watcher_NewFileDetected;
-            watcher.Created += Watcher_NewFileDetected;
+            _isLaunchedService = new IsLaunchedService();
+            _documentProcessorService = new DocumentProcessorService();
+            var filePath = ConfigurationManager.AppSettings.Get("FilePath");
+            _watcher = new FileSystemWatcher {Path = filePath ?? throw new InvalidOperationException(), Filter = "*.csv"};
+            _watcher.Changed += Watcher_NewFileDetected;
+            _watcher.Created += Watcher_NewFileDetected;
         }
         public void FileWatcherStart()
         {
-            isLaunchedService.SetAppStarted();
-            watcher.EnableRaisingEvents = true;
-            enabled = true;
-            while (enabled)
+            _isLaunchedService.SetAppStarted();
+            _watcher.EnableRaisingEvents = true;
+            _enabled = true;
+            while (_enabled)
             {
                 Thread.Sleep(1000);
             }
@@ -37,25 +34,25 @@ namespace CsvDocumentProcessor.Service.Servicies
 
         public void FileWatcherStop()
         {
-            isLaunchedService.SetAppStopped();
-            watcher.EnableRaisingEvents = false;
-            enabled = false;
+            _isLaunchedService.SetAppStopped();
+            _watcher.EnableRaisingEvents = false;
+            _enabled = false;
         }
 
         private void Watcher_NewFileDetected(object sender, FileSystemEventArgs e)
         {
             Console.WriteLine("Watcher_NewFileDetected");
-            documentProcessorService.DocumentProcessor();
+            _documentProcessorService.DocumentProcessor();
         }
         private void CurrentDomain_ProcessExit(object sender, EventArgs e)
         {
             Console.Beep();
-            isLaunchedService.SetAppStopped();
+            _isLaunchedService.SetAppStopped();
         }
         public void Dispose()
         {
-            isLaunchedService.SetAppStopped();
-            watcher.Dispose();
+            _isLaunchedService.SetAppStopped();
+            _watcher.Dispose();
         }
 
     }

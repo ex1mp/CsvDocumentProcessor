@@ -7,9 +7,9 @@ namespace CsvDocumentProcessor.Service.Servicies
     {
         public void SetAppStarted()
         {
-            RegistryKey registryKey = Registry.LocalMachine;
-            RegistryKey currentUserKey = Registry.CurrentUser;
-            RegistryKey startKey = currentUserKey.CreateSubKey("IsStartedCsvParcer");
+            var registryKey = Registry.LocalMachine;
+            var currentUserKey = Registry.CurrentUser;
+            var startKey = currentUserKey.CreateSubKey("IsStartedCsvParcer");
             if (startKey.GetValue("IsStarted") == null || startKey.GetValue("IsStarted").ToString() == "False")
             {
                 startKey.SetValue("IsStarted", true);
@@ -21,9 +21,9 @@ namespace CsvDocumentProcessor.Service.Servicies
         }
         public void SetAppStopped()
         {
-            RegistryKey localMachineKey = Registry.LocalMachine;
-            RegistryKey currentUserKey = Registry.CurrentUser;
-            RegistryKey startKey = currentUserKey.CreateSubKey("IsStartedCsvParcer");
+            var localMachineKey = Registry.LocalMachine;
+            var currentUserKey = Registry.CurrentUser;
+            var startKey = currentUserKey.CreateSubKey("IsStartedCsvParcer");
             startKey.SetValue("IsStarted", false);
         }
     }

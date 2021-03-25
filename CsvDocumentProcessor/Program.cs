@@ -2,12 +2,12 @@
 
 namespace CsvDocumentProcessor.Client.Console
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             System.Console.WriteLine("Console csvParcer started");
-            FileWatcherService fileWatcherService = new FileWatcherService();
+            var fileWatcherService = new FileWatcherService();
             fileWatcherService.FileWatcherStart();
         }
     }

@@ -33,9 +33,9 @@ namespace CsvDocumentProcessor.Client.WorkerWinService
         private static void CurrentDomain_ProcessExit(object sender, EventArgs e)
         {
             Console.Beep();
-            RegistryKey localMachineKey = Registry.LocalMachine;
-            RegistryKey currentUserKey = Registry.CurrentUser;
-            RegistryKey startKey = currentUserKey.CreateSubKey("IsStartedCsvParcer");
+            var localMachineKey = Registry.LocalMachine;
+            var currentUserKey = Registry.CurrentUser;
+            var startKey = currentUserKey.CreateSubKey("IsStartedCsvParcer");
             startKey.SetValue("IsStarted", false);
         }
     }

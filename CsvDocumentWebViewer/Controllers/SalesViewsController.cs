@@ -1,5 +1,4 @@
 ﻿using CsvDocumentWebViewer.Models;
-using CsvDocumentWebViewer.Services.Models;
 using CsvDocumentWebViewer.Services.ViewsRepository.ClientViewRepo;
 using CsvDocumentWebViewer.Services.ViewsRepository.ManagerViewRepo;
 using CsvDocumentWebViewer.Services.ViewsRepository.PtoductViewRepo;
@@ -11,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using CsvDocumentWebViewer.Services.ModelsView;
 
 namespace CsvDocumentWebViewer.Controllers
 {
@@ -35,7 +35,7 @@ namespace CsvDocumentWebViewer.Controllers
         // GET: SalesViews
         public async Task<IActionResult> Index(DateTime startDate, DateTime endDate, decimal minSum, decimal maxSum,
             int? pageNumber, DateTime currentStartDateFilter, DateTime currentEndDateFilter,
-            decimal currenMinSumFilter, decimal currentMaxSumFilter)
+            decimal currentMinSumFilter, decimal currentMaxSumFilter)
         {
             if (startDate != default || endDate != default
                 || minSum != default || maxSum != default)
@@ -46,7 +46,7 @@ namespace CsvDocumentWebViewer.Controllers
             {
                 startDate = currentStartDateFilter;
                 endDate = currentEndDateFilter;
-                minSum = currenMinSumFilter;
+                minSum = currentMinSumFilter;
                 maxSum = currentMaxSumFilter;
             }
             ViewData["StartDate"] = startDate;
@@ -54,23 +54,23 @@ namespace CsvDocumentWebViewer.Controllers
             ViewData["MinSum"] = minSum;
             ViewData["MaxSum"] = maxSum;
             var salesViews = await _salesViewRepository.GetAllAsync();
-            if (startDate != default(DateTime))
+            if (startDate != default)
             {
                 salesViews = salesViews.Where(x => x.SaleDate > startDate).ToList();
             }
-            if (endDate != default(DateTime))
+            if (endDate != default)
             {
                 salesViews = salesViews.Where(x => x.SaleDate < endDate).ToList();
             }
-            if (minSum != default(decimal))
+            if (minSum != default)
             {
                 salesViews = salesViews.Where(x => x.SaleCost > minSum).ToList();
             }
-            if (maxSum != default(decimal))
+            if (maxSum != default)
             {
                 salesViews = salesViews.Where(x => x.SaleCost < maxSum).ToList();
             }
-            int pageSize = 5;
+            var pageSize = 5;
             return View(PaginatedList<SalesView>.Create(salesViews, pageNumber ?? 1, pageSize));
         }
 
@@ -162,10 +162,6 @@ namespace CsvDocumentWebViewer.Controllers
                     if (!SalesViewExists(salesView.SalesId))
                     {
                         return NotFound();
-                    }
-                    else
-                    {
-                        throw;
                     }
                 }
                 return RedirectToAction(nameof(Index));

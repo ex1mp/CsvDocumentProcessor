@@ -1,12 +1,11 @@
 ﻿using CsvDocumentWebViewer.Models;
-using CsvDocumentWebViewer.Services.Models;
 using CsvDocumentWebViewer.Services.ViewsRepository.ManagerViewRepo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
+using CsvDocumentWebViewer.Services.ModelsView;
 
 namespace CsvDocumentWebViewer.Controllers
 {
@@ -44,7 +43,7 @@ namespace CsvDocumentWebViewer.Controllers
             {
                 managers = managers.Where(s => s.Post.ToUpper().Contains(managerPost.ToUpper())).ToList();
             }
-            int pageSize = 3;
+            var pageSize = 3;
             return View(PaginatedList<ManagerView>.Create(managers, pageNumber ?? 1, pageSize));
         }
 
@@ -79,14 +78,12 @@ namespace CsvDocumentWebViewer.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Create([Bind("ManagerId,Name,Surname,Post")] ManagerView managerView)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _managerViewRepository.Add(managerView);
-                //_context.Add(managerView);
-                //await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View(managerView);
             }
-            return View(managerView);
+            _managerViewRepository.Add(managerView);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: ManagerViews/Edit/5
@@ -118,26 +115,27 @@ namespace CsvDocumentWebViewer.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    _managerViewRepository.Update(managerView);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ManagerViewExists(managerView.ManagerId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return View(managerView);
+
             }
-            return View(managerView);
+            try
+            {
+                _managerViewRepository.Update(managerView);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ManagerViewExists(managerView.ManagerId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: ManagerViews/Delete/5

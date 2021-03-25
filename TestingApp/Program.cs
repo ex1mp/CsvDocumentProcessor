@@ -1,19 +1,14 @@
-﻿using CsvDocumentProcessor.Domain.Entities;
-using CsvDocumentProcessor.Repository.Repositories;
-using CsvDocumentWebViewer.Services.Models;
-using CsvDocumentWebViewer.Services.ViewsRepository;
-using CsvDocumentWebViewer.Services.ViewsRepository.ClientViewRepo;
+﻿using CsvDocumentWebViewer.Services.ViewsRepository.ClientViewRepo;
 using CsvDocumentWebViewer.Services.ViewsRepository.ManagerViewRepo;
 using CsvDocumentWebViewer.Services.ViewsRepository.PtoductViewRepo;
 using CsvDocumentWebViewer.Services.ViewsRepository.SalesViewRepo;
 using System;
-using System.Threading.Tasks;
 
 namespace TestingApp
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             SalesViewRepository salesViewRepository = new();
             IProductViewRepository productViewRepository = new ProductViewRepository();

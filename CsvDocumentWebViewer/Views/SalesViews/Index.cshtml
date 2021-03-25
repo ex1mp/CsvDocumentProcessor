@@ -1,4 +1,4 @@
-﻿@model PaginatedList<CsvDocumentWebViewer.Services.Models.SalesView>
+﻿@model PaginatedList<CsvDocumentWebViewer.Services.ModelsView.SalesView>
 
 @{
     ViewData["Title"] = "Sales";
@@ -86,8 +86,8 @@
    asp-route-pageNumber="@(Model.PageIndex - 1)"
    asp-route-currentStartDateFilter="@ViewData["StartDate"]"
    asp-route-currentEndDateFilter="@ViewData["EndDate"]"
-   asp-route-currenMinSumFilter="@ViewData["MinSum"]"
-   asp-route-currenMaxSumFilter="@ViewData["MaxSum"]"
+   asp-route-currentMinSumFilter="@ViewData["MinSum"]"
+   asp-route-currentMaxSumFilter="@ViewData["MaxSum"]"
    class="btn btn-primary @prevDisabled">
     Previous
 </a>
@@ -95,8 +95,8 @@
    asp-route-pageNumber="@(Model.PageIndex + 1)"
    asp-route-currentStartDateFilter="@ViewData["StartDate"]"
    asp-route-currentEndDateFilter="@ViewData["EndDate"]"
-   asp-route-currenMinSumFilter="@ViewData["MinSum"]"
-   asp-route-currenMaxSumFilter="@ViewData["MaxSum"]"
+   asp-route-currentMinSumFilter="@ViewData["MinSum"]"
+   asp-route-currentMaxSumFilter="@ViewData["MaxSum"]"
    class="btn btn-primary @nextDisabled">
     Next
 </a>

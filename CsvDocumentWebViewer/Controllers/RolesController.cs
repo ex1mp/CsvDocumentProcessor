@@ -1,109 +1,100 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using CsvDocumentWebViewer.Areas.Identity.Data;
+﻿using CsvDocumentWebViewer.Areas.Identity.Data;
 using CsvDocumentWebViewer.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CsvDocumentWebViewer.Controllers
 {
 
     [Authorize(Roles = "admin")]
     public class RolesController : Controller
+    {
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<WebViewerUser> _userManager;
+        public RolesController(RoleManager<IdentityRole> roleManager, UserManager<WebViewerUser> userManager)
         {
-            RoleManager<IdentityRole> _roleManager;
-            UserManager<WebViewerUser> _userManager;
-            public RolesController(RoleManager<IdentityRole> roleManager, UserManager<WebViewerUser> userManager)
-            {
-                _roleManager = roleManager;
-                _userManager = userManager;
-            }
-            public IActionResult Index() => View(_roleManager.Roles.ToList());
+            _roleManager = roleManager;
+            _userManager = userManager;
+        }
+        public IActionResult Index() => View(_roleManager.Roles.ToList());
 
-            public IActionResult Create() => View();
-            [HttpPost]
-            public async Task<IActionResult> Create(string name)
+        public IActionResult Create() => View();
+        [HttpPost]
+        public async Task<IActionResult> Create(string name)
+        {
+            if (string.IsNullOrEmpty(name))
             {
-                if (!string.IsNullOrEmpty(name))
-                {
-                    IdentityResult result = await _roleManager.CreateAsync(new IdentityRole(name));
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        foreach (var error in result.Errors)
-                        {
-                            ModelState.AddModelError(string.Empty, error.Description);
-                        }
-                    }
-                }
                 return View(name);
             }
-
-            [HttpPost]
-            public async Task<IActionResult> Delete(string id)
+            var result = await _roleManager.CreateAsync(new IdentityRole(name));
+            if (result.Succeeded)
             {
-                IdentityRole role = await _roleManager.FindByIdAsync(id);
-                if (role != null)
-                {
-                    IdentityResult result = await _roleManager.DeleteAsync(role);
-                }
                 return RedirectToAction("Index");
             }
-
-            public IActionResult UserList() => View(_userManager.Users.ToList());
-
-            public async Task<IActionResult> Edit(string userId)
+            else
             {
-            // получаем пользователя
-            WebViewerUser user = await _userManager.FindByIdAsync(userId);
-                if (user != null)
+                foreach (var error in result.Errors)
                 {
-                    // получем список ролей пользователя
-                    var userRoles = await _userManager.GetRolesAsync(user);
-                    var allRoles = _roleManager.Roles.ToList();
-                    ChangeRoleViewModel model = new ChangeRoleViewModel
-                    {
-                        UserId = user.Id,
-                        UserEmail = user.Email,
-                        UserRoles = userRoles,
-                        AllRoles = allRoles
-                    };
-                    return View(model);
+                    ModelState.AddModelError(string.Empty, error.Description);
                 }
-
-                return NotFound();
             }
-            [HttpPost]
-            public async Task<IActionResult> Edit(string userId, List<string> roles)
-            {
-            // получаем пользователя
-            WebViewerUser user = await _userManager.FindByIdAsync(userId);
-                if (user != null)
-                {
-                    // получем список ролей пользователя
-                    var userRoles = await _userManager.GetRolesAsync(user);
-                    // получаем все роли
-                    var allRoles = _roleManager.Roles.ToList();
-                    // получаем список ролей, которые были добавлены
-                    var addedRoles = roles.Except(userRoles);
-                    // получаем роли, которые были удалены
-                    var removedRoles = userRoles.Except(roles);
-
-                    await _userManager.AddToRolesAsync(user, addedRoles);
-
-                    await _userManager.RemoveFromRolesAsync(user, removedRoles);
-
-                return RedirectToAction("UserList");
-                }
-
-                return NotFound();
-            }
+            return View(name);
         }
-    
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var role = await _roleManager.FindByIdAsync(id);
+            if (role != null)
+            {
+                var result = await _roleManager.DeleteAsync(role);
+            }
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult UserList() => View(_userManager.Users.ToList());
+
+        public async Task<IActionResult> Edit(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var allRoles = _roleManager.Roles.ToList();
+            var model = new ChangeRoleViewModel
+            {
+                UserId = user.Id,
+                UserEmail = user.Email,
+                UserRoles = userRoles,
+                AllRoles = allRoles
+            };
+            return View(model);
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(string userId, List<string> roles)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var allRoles = _roleManager.Roles.ToList();
+            var addedRoles = roles.Except(userRoles);
+            var removedRoles = userRoles.Except(roles);
+            await _userManager.AddToRolesAsync(user, addedRoles);
+            await _userManager.RemoveFromRolesAsync(user, removedRoles);
+
+            return RedirectToAction("UserList");
+
+        }
+    }
+
 }

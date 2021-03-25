@@ -8,25 +8,25 @@ namespace CsvDocumentProcessor.Client.WorkerWinService
 {
     public class CsvWatchService : IHostedService, IDisposable
     {
-        FileWatcherService fileWatcher;
+        private FileWatcherService _fileWatcher;
         public Task StartAsync(CancellationToken cancellationToken)
         {
             // Startup code
-            fileWatcher = new FileWatcherService();
-            fileWatcher.FileWatcherStart();
+            _fileWatcher = new FileWatcherService();
+            _fileWatcher.FileWatcherStart();
             return Task.CompletedTask;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
             //Stop timers, services
-            fileWatcher.FileWatcherStop();
+            _fileWatcher.FileWatcherStop();
             return Task.CompletedTask;
         }
 
         public void Dispose()
         {
-            fileWatcher.FileWatcherStop();
+            _fileWatcher.FileWatcherStop();
             // dispose of non-managed resources
         }
     }

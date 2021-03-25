@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace DbDataFiller
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            using AppDbContext appDbContext = new AppDbContext();
+            using var appDbContext = new AppDbContext();
             //var manager = new Manager() { Name = "Jack", Surname = "Sokolov", Post = "seller" };
             //var manager1 = new Manager() { Name = "Jack", Surname = "Porovozov", Post = "seller" };
             //var cl = new Client() { Name = "Jack", Surname = "Sokol" };
@@ -17,7 +17,7 @@ namespace DbDataFiller
             //appDbContext.Add(manager);
             //appDbContext.Add(manager1); appDbContext.Add(cl); appDbContext.Add(pr);
             //appDbContext.SaveChanges();
-            Sales temp = new Sales() { //Manager = appDbContext.Managers.FirstOrDefault(x => x.Surname == "Sokolov"),
+            var temp = new Sales() { //Manager = appDbContext.Managers.FirstOrDefault(x => x.Surname == "Sokolov"),
             //    Client = appDbContext.Clients.FirstOrDefault(x => x.Surname == "Sokol"),
             //    Product = appDbContext.Products.FirstOrDefault(x => x.ProductName == "Water"), SaleDate = DateTime.Now, SaleCost = 11111,
                 SalesId = 2,

@@ -8,32 +8,33 @@ namespace CsvDocumentProcessor.Service.Servicies
 {
     public class DocumentProcessorService
     {
-        private static List<string> filesInProcessing;
-        private readonly string processedFilePath;
-        private readonly string filePath;
-        private SalesCreatorService salesCreatorService;
+        private static List<string> _filesInProcessing;
+        private readonly string _processedFilePath;
+        private readonly string _filePath;
+        private readonly SalesCreatorService _salesCreatorService;
 
         public DocumentProcessorService()
         {
-            processedFilePath = ConfigurationManager.AppSettings.Get("ProcessedFilePath");
-            filePath = ConfigurationManager.AppSettings.Get("FilePath");
-            filesInProcessing = new List<string>();
-            salesCreatorService = new SalesCreatorService();
+            _processedFilePath = ConfigurationManager.AppSettings.Get("ProcessedFilePath");
+            _filePath = ConfigurationManager.AppSettings.Get("FilePath");
+            _filesInProcessing = new List<string>();
+            _salesCreatorService = new SalesCreatorService();
         }
 
         public void DocumentProcessor()
         {
             try
             {
-                var csvFiles = Directory.EnumerateFiles(filePath, "*.csv");
+                var csvFiles = Directory.EnumerateFiles(_filePath, "*.csv");
 
                 foreach (var currentFile in csvFiles)
                 {
-                    if (!filesInProcessing.Contains(currentFile))
+                    if (_filesInProcessing.Contains(currentFile))
                     {
-                        filesInProcessing.Add(currentFile);
-                        DataFromFileToDbAsync(currentFile);
+                        continue;
                     }
+                    _filesInProcessing.Add(currentFile);
+                    DataFromFileToDbAsync(currentFile);
                 }
             }
             catch (Exception e)
@@ -47,23 +48,23 @@ namespace CsvDocumentProcessor.Service.Servicies
         }
         private void DataFromFileToDb(string currentFile)
         {
-            salesCreatorService.DataFromFileToDb(currentFile);
+            _salesCreatorService.DataFromFileToDb(currentFile);
             MoveDocument(currentFile);
         }
 
         private void MoveDocument(string filePath)
         {
-            var targetPath = processedFilePath + "/" + Path.GetFileName(filePath);
-            if (!Directory.Exists(processedFilePath))
+            var targetPath = _processedFilePath + "/" + Path.GetFileName(filePath);
+            if (!Directory.Exists(_processedFilePath))
             {
-                Directory.CreateDirectory(processedFilePath);
+                Directory.CreateDirectory(_processedFilePath);
             }
             if (File.Exists(targetPath))
             {
                 File.Delete(targetPath);
             }
             File.Move(filePath, targetPath);
-            filesInProcessing.RemoveAll(x => x == filePath);
+            _filesInProcessing.RemoveAll(x => x == filePath);
         }
     }
 }

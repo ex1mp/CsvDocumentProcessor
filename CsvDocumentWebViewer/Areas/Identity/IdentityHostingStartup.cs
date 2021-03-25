@@ -1,6 +1,5 @@
 ﻿using System;
 using CsvDocumentWebViewer.Areas.Identity.Data;
-using CsvDocumentWebViewer.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
