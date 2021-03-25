@@ -9,8 +9,8 @@ namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
 {
     public class ProductRepository : IRepository<Product>
     {
-        private AppDbContext _dbContext;
-        private ReaderWriterLockSlim _productsLockSlim;
+        private readonly AppDbContext _dbContext;
+        private readonly ReaderWriterLockSlim _productsLockSlim;
         public ProductRepository(AppDbContext dbContext, ReaderWriterLockSlim productsLockSlim)
         {
             this._dbContext = dbContext;

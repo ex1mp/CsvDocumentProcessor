@@ -1,17 +1,17 @@
 ﻿using CsvDocumentProcessor.Domain.Entities;
 using CsvDocumentProcessor.Repository;
-using CsvDocumentProcessor.Repository.Repositories.ImplementingClasses;
-using System.Collections.Generic;
 using CsvDocumentProcessor.Repository.Repositories;
+using CsvDocumentProcessor.Repository.Repositories.ImplementingClasses;
 using CsvDocumentProcessor.Repository.Repositories.SalesRepository;
 using CsvDocumentProcessor.Service.Parcers;
+using System.Collections.Generic;
 
 namespace CsvDocumentProcessor.Service.Servicies
 {
     public class SalesCreatorService
     {
-        private static LockSlimContainer syncObjContainer;
-        private static CsvParcer csvParcer;
+        private static readonly LockSlimContainer syncObjContainer;
+        private static readonly CsvParcer csvParcer;
         static SalesCreatorService()
         {
             csvParcer = new CsvParcer();

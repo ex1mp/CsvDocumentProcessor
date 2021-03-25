@@ -9,8 +9,8 @@ namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
 {
     public class ManagerRepository : IRepository<Manager>
     {
-        private AppDbContext _dbContext;
-        private ReaderWriterLockSlim _managersLockSlim;
+        private readonly AppDbContext _dbContext;
+        private readonly ReaderWriterLockSlim _managersLockSlim;
         public ManagerRepository(AppDbContext dbContext, ReaderWriterLockSlim managersLockSlim)
         {
             this._dbContext = dbContext;
@@ -26,7 +26,7 @@ namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
         {
             return await _dbContext.Managers.ToListAsync();
         }
-        public  ICollection<Manager> GetAll()
+        public ICollection<Manager> GetAll()
         {
             return _dbContext.Managers.ToList();
         }

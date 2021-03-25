@@ -4,7 +4,6 @@ using CsvDocumentWebViewer.Services.ViewsRepository.PtoductViewRepo;
 using CsvDocumentWebViewer.Services.ViewsRepository.SalesViewRepo;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,16 +24,10 @@ namespace CsvDocumentWebViewer
         {
             services.AddControllersWithViews();
             services.AddRazorPages();
-
-            services.AddDbContext<CsvDocumentWebViewerContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("CsvDocumentWebViewerContext")));
             services.AddTransient<IProductViewRepository, ProductViewRepository>();
             services.AddTransient<IManagerViewRepository, ManagerViewRepository>();
-            services.AddTransient<IClientViewRepository, ClientViewRepository>(); 
+            services.AddTransient<IClientViewRepository, ClientViewRepository>();
             services.AddTransient<ISalesViewRepository, SalesViewRepository>();
-            //services.AddDefaultIdentity<WebViewerUser>().
-            //    AddRoles<IdentityRole>().
-            //    AddEntityFrameworkStores<AuthDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

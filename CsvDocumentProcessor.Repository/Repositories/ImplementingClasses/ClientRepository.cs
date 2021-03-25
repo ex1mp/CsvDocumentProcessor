@@ -9,8 +9,8 @@ namespace CsvDocumentProcessor.Repository.Repositories.ImplementingClasses
 {
     public class ClientRepository : IRepository<Client>
     {
-        private AppDbContext _dbContext;
-        private ReaderWriterLockSlim _clientsLockSlim;
+        private readonly AppDbContext _dbContext;
+        private readonly ReaderWriterLockSlim _clientsLockSlim;
         public ClientRepository(AppDbContext dbContext, ReaderWriterLockSlim clientsLockSlim)
         {
             this._dbContext = dbContext;

@@ -1,11 +1,8 @@
-﻿using CsvDocumentProcessor.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace CsvDocumentProcessor.Repository.Repositories
 {
-    public interface IRepository<TEntity>:IDisposable where TEntity: class
+    public interface IRepository<TEntity> : IDisposable where TEntity : class
     {
         void Add(ref TEntity entity);
         void Remove(int id);

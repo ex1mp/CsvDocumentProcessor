@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using CsvDocumentProcessor.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CsvDocumentProcessor.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace CsvDocumentProcessor.Repository.Repositories.SalesRepository
 {
     public class SalesRepository : ISalesRepository
     {
-        private AppDbContext _dbContext;
-        private ReaderWriterLockSlim _salesLockSlim;
+        private readonly AppDbContext _dbContext;
+        private readonly ReaderWriterLockSlim _salesLockSlim;
         public SalesRepository(AppDbContext dbContext, ReaderWriterLockSlim salesLockSlim)
         {
             this._dbContext = dbContext;
@@ -46,7 +46,7 @@ namespace CsvDocumentProcessor.Repository.Repositories.SalesRepository
         }
         public Sales Get(int id)
         {
-            
+
             return _dbContext.Sales
                 .Include(x => x.Manager)
                 .Include(x => x.Client)

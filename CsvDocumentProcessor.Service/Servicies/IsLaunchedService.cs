@@ -8,8 +8,6 @@ namespace CsvDocumentProcessor.Service.Servicies
         public void SetAppStarted()
         {
             RegistryKey registryKey = Registry.LocalMachine;
-
-            RegistryKey localMachineKey = Registry.LocalMachine;
             RegistryKey currentUserKey = Registry.CurrentUser;
             RegistryKey startKey = currentUserKey.CreateSubKey("IsStartedCsvParcer");
             if (startKey.GetValue("IsStarted") == null || startKey.GetValue("IsStarted").ToString() == "False")

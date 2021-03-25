@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+﻿using CsvDocumentWebViewer.Models;
 using CsvDocumentWebViewer.Services.Models;
 using CsvDocumentWebViewer.Services.ViewsRepository.ManagerViewRepo;
-using CsvDocumentWebViewer.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CsvDocumentWebViewer.Controllers
 {
+    [Authorize]
     public class ManagerViewsController : Controller
     {
-        private readonly CsvDocumentWebViewerContext _context;
         private readonly IManagerViewRepository _managerViewRepository;
 
-        public ManagerViewsController(CsvDocumentWebViewerContext context, IManagerViewRepository managerViewRepository)
+        public ManagerViewsController(IManagerViewRepository managerViewRepository)
         {
-            _context = context;
             _managerViewRepository = managerViewRepository;
         }
 
@@ -38,22 +36,19 @@ namespace CsvDocumentWebViewer.Controllers
             ViewData["SurnameFilter"] = managerSurname;
             ViewData["PostFilter"] = managerPost;
             var managers = await _managerViewRepository.GetAllAsync();
-            if (!String.IsNullOrEmpty(managerSurname))
+            if (!string.IsNullOrEmpty(managerSurname))
             {
                 managers = managers.Where(s => s.Surname.ToUpper().Contains(managerSurname.ToUpper())).ToList();
             }
-            if (!String.IsNullOrEmpty(managerPost))
+            if (!string.IsNullOrEmpty(managerPost))
             {
                 managers = managers.Where(s => s.Post.ToUpper().Contains(managerPost.ToUpper())).ToList();
             }
             int pageSize = 3;
             return View(PaginatedList<ManagerView>.Create(managers, pageNumber ?? 1, pageSize));
-            //return View(managers);
-           // return View(await _context.ManagerView.ToListAsync());
         }
 
         // GET: ManagerViews/Details/5
-        //public async Task<IActionResult> Details(int? id)
         public IActionResult Details(int? id)
         {
             if (id == null)
@@ -61,8 +56,7 @@ namespace CsvDocumentWebViewer.Controllers
                 return NotFound();
             }
             var managerView = _managerViewRepository.Get(id);
-            //var managerView = await _context.ManagerView
-            //    .FirstOrDefaultAsync(m => m.ManagerId == id);
+
             if (managerView == null)
             {
                 return NotFound();
@@ -72,18 +66,17 @@ namespace CsvDocumentWebViewer.Controllers
         }
 
         // GET: ManagerViews/Create
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             return View();
         }
 
         // POST: ManagerViews/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 
-        //public async Task<IActionResult> Create([Bind("ManagerId,Name,Surname,Post")] ManagerView managerView)
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public IActionResult Create([Bind("ManagerId,Name,Surname,Post")] ManagerView managerView)
         {
             if (ModelState.IsValid)
@@ -97,8 +90,8 @@ namespace CsvDocumentWebViewer.Controllers
         }
 
         // GET: ManagerViews/Edit/5
-        //public async Task<IActionResult> Edit(int? id)
-            public IActionResult Edit(int? id)
+        [Authorize(Roles = "admin")]
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -106,7 +99,7 @@ namespace CsvDocumentWebViewer.Controllers
             }
 
             var managerView = _managerViewRepository.Get(id);
-            //var managerView = await _context.ManagerView.FindAsync(id);
+
             if (managerView == null)
             {
                 return NotFound();
@@ -115,11 +108,9 @@ namespace CsvDocumentWebViewer.Controllers
         }
 
         // POST: ManagerViews/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //public async Task<IActionResult> Edit(int id, [Bind("ManagerId,Name,Surname,Post")] ManagerView managerView)
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public IActionResult Edit(int id, [Bind("ManagerId,Name,Surname,Post")] ManagerView managerView)
         {
             if (id != managerView.ManagerId)
@@ -132,8 +123,6 @@ namespace CsvDocumentWebViewer.Controllers
                 try
                 {
                     _managerViewRepository.Update(managerView);
-                    //_context.Update(managerView);
-                    //await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -152,7 +141,7 @@ namespace CsvDocumentWebViewer.Controllers
         }
 
         // GET: ManagerViews/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
+        [Authorize(Roles = "admin")]
         public IActionResult Delete(int? id)
         {
             if (id == null)
@@ -161,8 +150,7 @@ namespace CsvDocumentWebViewer.Controllers
             }
 
             var managerView = _managerViewRepository.Get(id);
-            //var managerView = await _context.ManagerView
-            //    .FirstOrDefaultAsync(m => m.ManagerId == id);
+
             if (managerView == null)
             {
                 return NotFound();
@@ -172,22 +160,19 @@ namespace CsvDocumentWebViewer.Controllers
         }
 
         // POST: ManagerViews/Delete/5
-        //public async Task<IActionResult> DeleteConfirmed(int id)
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public IActionResult DeleteConfirmed(int id)
         {
             _managerViewRepository.Delete(id);
-            //var managerView = await _context.ManagerView.FindAsync(id);
-            //_context.ManagerView.Remove(managerView);
-            //await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ManagerViewExists(int id)
         {
             return _managerViewRepository.Exists(id);
-            //return _context.ManagerView.Any(e => e.ManagerId == id);
         }
     }
 }

@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\SalesInfoViewer\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CsvDocumentWebViewer.Services\CsvDocumentWebViewer.Services.csproj" />
   </ItemGroup>
 

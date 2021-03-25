@@ -8,10 +8,10 @@ namespace CsvDocumentProcessor.Service.Servicies
     public class FileWatcherService : IDisposable
     {
         private readonly string filePath;
-        private DocumentProcessorService documentProcessorService;
-        private FileSystemWatcher watcher;
+        private readonly DocumentProcessorService documentProcessorService;
+        private readonly FileSystemWatcher watcher;
         private bool enabled = true;
-        private IsLaunchedService isLaunchedService;
+        private readonly IsLaunchedService isLaunchedService;
         public FileWatcherService()
         {
             AppDomain.CurrentDomain.ProcessExit += new EventHandler(CurrentDomain_ProcessExit);
@@ -23,7 +23,6 @@ namespace CsvDocumentProcessor.Service.Servicies
             watcher.Filter = "*.csv";
             watcher.Changed += Watcher_NewFileDetected;
             watcher.Created += Watcher_NewFileDetected;
-            //watcher.EnableRaisingEvents = true;
         }
         public void FileWatcherStart()
         {
