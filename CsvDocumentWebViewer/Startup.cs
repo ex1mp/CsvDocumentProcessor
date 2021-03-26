@@ -1,4 +1,5 @@
-﻿using CsvDocumentWebViewer.Services.ViewsRepository.ClientViewRepo;
+﻿using CsvDocumentWebViewer.Services;
+using CsvDocumentWebViewer.Services.ViewsRepository.ClientViewRepo;
 using CsvDocumentWebViewer.Services.ViewsRepository.ManagerViewRepo;
 using CsvDocumentWebViewer.Services.ViewsRepository.PtoductViewRepo;
 using CsvDocumentWebViewer.Services.ViewsRepository.SalesViewRepo;
@@ -28,6 +29,7 @@ namespace CsvDocumentWebViewer
             services.AddTransient<IManagerViewRepository, ManagerViewRepository>();
             services.AddTransient<IClientViewRepository, ClientViewRepository>();
             services.AddTransient<ISalesViewRepository, SalesViewRepository>();
+            services.AddAutoMapper(typeof(AutoMappProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
