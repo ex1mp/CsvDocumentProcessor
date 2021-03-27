@@ -15,8 +15,11 @@
             <input type="submit" value="Search" class="btn btn-primary" />
         </p>
         <p>
-            
-            <a asp-action="Index">Back to Full List</a> | <a asp-action="Create">Create New</a>
+            <a asp-action="Index">Back to Full List</a>
+            @if (User.IsInRole("admin"))
+            {
+              <h7>|</h7> <a asp-action="Create">Create New</a> 
+            }
         </p>
     </div>
 </form>
@@ -24,7 +27,7 @@
     <thead>
         <tr>
             <th>
-                SalesId
+                Sale Id
             </th>
             <th>
                 Manager
@@ -36,10 +39,10 @@
                 Product
             </th>
             <th>
-                SaleDate
+                Date
             </th>
             <th>
-                SaleCost
+                Cost
             </th>
             <th></th>
         </tr>
@@ -69,9 +72,12 @@
                     @Html.DisplayFor(modelItem => item.SaleCost)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.SalesId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.SalesId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.SalesId">Delete</a>
+                    <a asp-action="Details" asp-route-id="@item.SalesId">Details</a>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <h7>|</h7> <a asp-action="Edit" asp-route-id="@item.SalesId">Edit</a>
+                        <h7>|</h7> <a asp-action="Delete" asp-route-id="@item.SalesId">Delete</a>
+                    }
                 </td>
             </tr>
         }

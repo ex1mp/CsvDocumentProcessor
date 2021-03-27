@@ -13,8 +13,12 @@
     <div class="form-actions no-color">
         <p>
             Find by name: <input type="text" name="productName" value="@ViewData["NameFilter"]" />
-            <input type="submit" value="Search" class="btn btn-primary" /> |
-            <a asp-action="Index">Back to Full List</a> | <a asp-action="Create">Create New</a>
+            <input type="submit" value="Search" class="btn btn-primary" /> <h7>|</h7>
+            <a asp-action="Index">Back to Full List</a> 
+             @if (User.IsInRole("admin"))
+             {
+               <h7>|</h7> <a asp-action="Create">Create New</a>
+             }
         </p>
     </div>
 </form>
@@ -35,9 +39,12 @@
                     @Html.DisplayFor(modelItem => item.ProductName)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                    <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> 
+                     @if (User.IsInRole("admin"))
+                     {
+                       <h7>|</h7> <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> 
+                       <h7>|</h7> <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                     }
                 </td>
             </tr>
         }

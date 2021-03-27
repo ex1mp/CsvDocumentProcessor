@@ -12,8 +12,12 @@
         <p>
             Filter out by surname: <input type="text" name="managerSurname" value="@ViewData["SurnameFilter"]" />
             Filter out by post: <input type="text" name="managerPost" value="@ViewData["PostFilter"]" />
-            <input type="submit" value="Search" class="btn btn-primary" /> |
-            <a asp-action="Index">Back to Full List</a> | <a asp-action="Create">Create New</a>
+            <input type="submit" value="Search" class="btn btn-primary" /> <h7>|</h7>
+            <a asp-action="Index">Back to Full List</a>  
+            @if (User.IsInRole("admin"))
+            {
+                <h7>|</h7> <a asp-action="Create">Create New</a>
+            }
         </p>
     </div>
 </form>
@@ -46,9 +50,12 @@
                     @Html.DisplayFor(modelItem => item.Post)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ManagerId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ManagerId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ManagerId">Delete</a> 
+                    <a asp-action="Details" asp-route-id="@item.ManagerId">Details</a> 
+                      @if (User.IsInRole("admin"))
+                      {
+                           <h7>|</h7> <a asp-action="Edit" asp-route-id="@item.ManagerId">Edit</a> 
+                           <h7>|</h7>  <a asp-action="Delete" asp-route-id="@item.ManagerId">Delete</a>
+                      }
                 </td>
             </tr>
         }
