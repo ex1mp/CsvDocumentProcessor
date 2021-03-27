@@ -3,7 +3,13 @@
 }
 @if (User.IsInRole("admin"))
 {
-    <div class="text-center">   
+    <div class="text-center">
+        <h1 class="display-4">Wellcome, administrator</h1>
+    </div>
+}
+else
+{
+    <div class="text-center">
         <h1 class="display-4">Welcome</h1>
     </div>
 }

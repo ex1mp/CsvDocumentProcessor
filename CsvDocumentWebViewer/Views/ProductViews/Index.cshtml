@@ -14,7 +14,7 @@
         <p>
             Find by name: <input type="text" name="productName" value="@ViewData["NameFilter"]" />
             <input type="submit" value="Search" class="btn btn-primary" /> <h7>|</h7>
-            <a asp-action="Index">Back to Full List</a> 
+            <a asp-action="Index">Full List</a> 
              @if (User.IsInRole("admin"))
              {
                <h7>|</h7> <a asp-action="Create">Create New</a>

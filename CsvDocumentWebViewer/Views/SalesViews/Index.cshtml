@@ -13,13 +13,7 @@
             min sum : <input type="number" name="minSum" value="@ViewData["MinSum"]" />
             max sum : <input type="number" name="maxSum" value="@ViewData["MaxSum"]" />
             <input type="submit" value="Search" class="btn btn-primary" />
-        </p>
-        <p>
-            <a asp-action="Index">Back to Full List</a>
-            @if (User.IsInRole("admin"))
-            {
-              <h7>|</h7> <a asp-action="Create">Create New</a> 
-            }
+            <h7>|</h7> <a asp-action="Index">Full List</a>
         </p>
     </div>
 </form>
@@ -43,6 +37,12 @@
             </th>
             <th>
                 Cost
+            </th>
+            <th>
+                @if (User.IsInRole("admin"))
+                {
+                    <a asp-action="Create">Create New</a>
+                }
             </th>
             <th></th>
         </tr>
