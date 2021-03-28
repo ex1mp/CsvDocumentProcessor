@@ -2,7 +2,9 @@
 using CsvDocumentWebViewer.Services.ViewsRepository.ManagerViewRepo;
 using CsvDocumentWebViewer.Services.ViewsRepository.PtoductViewRepo;
 using CsvDocumentWebViewer.Services.ViewsRepository.SalesViewRepo;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace TestingApp
 {
@@ -10,12 +12,13 @@ namespace TestingApp
     {
         private static void Main(string[] args)
         {
-            SalesViewRepository salesViewRepository = new();
-            IProductViewRepository productViewRepository = new ProductViewRepository();
-            ClientViewRepository clientViewRepository = new();
-            ManagerViewRepository managerViewRepository = new();
-            var f = productViewRepository.GetAllAsync().Result;
-            Console.WriteLine("dss");
+           // var s = GetAnalyticsInfo();
+            //Console.WriteLine();
+            //IProductViewRepository productViewRepository = new ProductViewRepository();
+            //ClientViewRepository clientViewRepository = new();
+            //ManagerViewRepository managerViewRepository = new();
+            //var f = productViewRepository.GetAllAsync().Result;
+            //Console.WriteLine("dss");
             //Console.WriteLine(salesViewRepository.Exists(5));
             //var salV = new SalesView()
             //{
@@ -55,6 +58,14 @@ namespace TestingApp
 
             //}
             //Console.ReadKey();
+        }
+        public static string GetAnalyticsInfo()
+        {
+            var sales = new Dictionary<string, int>();
+            sales.Add("23.30.2323", 8);
+            sales.Add("24.30.2323", 18);
+
+            return JsonConvert.SerializeObject(sales);
         }
     }
 }

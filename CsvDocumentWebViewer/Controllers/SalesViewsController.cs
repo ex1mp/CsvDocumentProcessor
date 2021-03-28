@@ -1,4 +1,5 @@
 ﻿using CsvDocumentWebViewer.Models;
+using CsvDocumentWebViewer.Services.ModelsView;
 using CsvDocumentWebViewer.Services.ViewsRepository.ClientViewRepo;
 using CsvDocumentWebViewer.Services.ViewsRepository.ManagerViewRepo;
 using CsvDocumentWebViewer.Services.ViewsRepository.PtoductViewRepo;
@@ -7,10 +8,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using CsvDocumentWebViewer.Services.ModelsView;
 
 namespace CsvDocumentWebViewer.Controllers
 {
@@ -203,6 +204,29 @@ namespace CsvDocumentWebViewer.Controllers
         private bool SalesViewExists(int id)
         {
             return _salesViewRepository.Exists(id);
+        }
+        public string GetAnalytics()
+        {
+            var s = _salesViewRepository.GetAllAsync();
+            var d = s.Result.Where(x=>x.SaleDate.Month==DateTime.Now.Month && x.SaleDate.Year== DateTime.Now.Year)
+                .GroupBy(x => x.SaleDate.Date)
+                .Select(f => new
+                {
+                    date = f.Key.Date,
+                    profit = f.Sum(w => w.SaleCost)
+                }).ToList();
+
+            d.Sort((x, y) => DateTime.Compare(x.date, y.date));
+            var e = d.Select(f => new
+            {
+                date = f.date.ToShortDateString(),
+                profit = f.profit
+            });
+            return JsonConvert.SerializeObject(e);
+        }
+        public IActionResult Analytics()
+        {
+            return View();
         }
     }
 }

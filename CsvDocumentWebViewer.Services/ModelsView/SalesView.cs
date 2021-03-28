@@ -18,8 +18,7 @@ namespace CsvDocumentWebViewer.Services.ModelsView
         [ForeignKey("ProductId")]
         public virtual ProductView Product { get; set; }
         public DateTime SaleDate { get; set; }
-        [Column(TypeName = "int(10)")]
-        [MaxLength(10, ErrorMessage = "Maximum 10 characters only")]
+        [Column(TypeName = "decimal(25)")]
         [Required(ErrorMessage = "This Field is required.")]
         public decimal SaleCost { get; set; }
     }
