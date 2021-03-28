@@ -17,10 +17,12 @@
         $(document).ready(function () {
             $.getJSON("/SalesViews/GetAnalytics", function (data) {
                 var Date = []
-                var Profit = []
+                var cProfit = []
+                var pProfit = []
                 for (var i = 0; i < data.length; i++) {
                     Date.push(data[i].date);
-                    Profit.push(data[i].profit);
+                    cProfit.push(data[i].cProfit);
+                    pProfit.push(data[i].pProfit);
                 }
 
                 Highcharts.chart('container', {
@@ -48,8 +50,13 @@
                     },
                     series: [{
                         name: 'Current month',
-                        data: Profit
-                    }]
+                        data: cProfit
+                    },
+                        {
+                            name: 'Previous month',
+                            data: pProfit
+                        }
+                    ]
                 });
             });
         });

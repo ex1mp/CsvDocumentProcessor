@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -200,15 +201,19 @@ namespace CsvDocumentWebViewer.Controllers
             _salesViewRepository.Delete(id);
             return RedirectToAction(nameof(Index));
         }
-
-        private bool SalesViewExists(int id)
-        {
-            return _salesViewRepository.Exists(id);
-        }
         public string GetAnalytics()
         {
-            var s = _salesViewRepository.GetAllAsync();
-            var d = s.Result.Where(x=>x.SaleDate.Month==DateTime.Now.Month && x.SaleDate.Year== DateTime.Now.Year)
+            var allSales = _salesViewRepository.GetAllAsync();
+            var currentMounthSales = allSales.Result.Where(x => (x.SaleDate.Month == DateTime.Now.Month)
+            && x.SaleDate.Year == DateTime.Now.Year)
+                .GroupBy(x => x.SaleDate.Date)
+                .Select(f => new
+                {
+                    date = f.Key.Date,
+                    profit = f.Sum(w => w.SaleCost)
+                }).ToList();
+            var previousMounthSales = allSales.Result.Where(x => x.SaleDate.Month == DateTime.Now.AddMonths(-1).Month
+            && x.SaleDate.Year == DateTime.Now.Year)
                 .GroupBy(x => x.SaleDate.Date)
                 .Select(f => new
                 {
@@ -216,14 +221,40 @@ namespace CsvDocumentWebViewer.Controllers
                     profit = f.Sum(w => w.SaleCost)
                 }).ToList();
 
-            d.Sort((x, y) => DateTime.Compare(x.date, y.date));
-            var e = d.Select(f => new
+            var result = new List<dynamic>();
+            for (int i = 1; i <= DateTime.Now.Day; i++)
             {
-                date = f.date.ToShortDateString(),
-                profit = f.profit
-            });
-            return JsonConvert.SerializeObject(e);
+                var cSale = currentMounthSales.FirstOrDefault(x => x.date.Day == i);
+                var pSale = previousMounthSales.FirstOrDefault(x => x.date.Day == i);
+                decimal cProfit;
+                decimal pProfit;
+                if (cSale != null)
+                {
+                    cProfit = cSale.profit;
+                }
+                else
+                {
+                    cProfit = 0;
+                }
+
+                if (pSale != null)
+                {
+                    pProfit = pSale.profit;
+                }
+                else
+                {
+                    pProfit = 0;
+                }
+                result.Add(new { date = i, cProfit = cProfit, pProfit = pProfit });
+            }
+            return JsonConvert.SerializeObject(result);
         }
+
+        private bool SalesViewExists(int id)
+        {
+            return _salesViewRepository.Exists(id);
+        }
+       
         public IActionResult Analytics()
         {
             return View();
